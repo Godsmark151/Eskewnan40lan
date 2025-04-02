@@ -1,6 +1,5 @@
 let mediaRecorder;
 let recordedChunks = [];
-let currentCamera = 'user'; // 'user' = front, 'environment' = back
 
 function openCamera(language) {
     const frameImage = {
@@ -15,91 +14,79 @@ function openCamera(language) {
     const startButton = document.getElementById('startRecording');
     const stopButton = document.getElementById('stopRecording');
     const downloadButton = document.getElementById('downloadVideo');
-    const switchCameraButton = document.getElementById('switchCamera');
+    const recordedVideo = document.getElementById('recordedVideo');
     const body = document.body;
 
-    // ❌ Kache tout lòt kontni paj la
+    // Fè sit la disparèt epi mete kamera an plen ekran
     body.style.overflow = 'hidden';
-    body.style.height = '100vh';
-    body.style.background = 'black';
-
-    // ✅ Fè sèlman kamera ak frame lan parèt sou ekran an
     cameraScreen.style.display = 'flex';
     cameraScreen.style.position = 'fixed';
     cameraScreen.style.top = '0';
     cameraScreen.style.left = '0';
     cameraScreen.style.width = '100%';
     cameraScreen.style.height = '100vh';
-    cameraScreen.style.background = 'black';
     cameraScreen.style.zIndex = '1000';
 
-    // 📌 Mete frame lan selon lang yo
+    // Mete frame ki matche ak lang lan
     frame.src = frameImage[language];
 
-    // 🟢 Chanje lang bouton yo
+    // Mete bouton yo ak lang ki koresponn
     startButton.innerText = language === 'fr' ? '🔴 Enregistrer' : language === 'en' ? '🔴 Record' : '🔴 Rekòde';
     stopButton.innerText = language === 'fr' ? '⏹️ Arrêter' : language === 'en' ? '⏹️ Stop' : '⏹️ Stop';
-    downloadButton.innerText = language === 'fr' ? '⬇️ Télécharger' : language === 'en' ? '⬇️ Download' : '⬇️ Telechaje';
+    downloadButton.innerText = language === 'fr' ? '📥 Télécharger' : language === 'en' ? '📥 Download' : '📥 Telechaje';
 
-    // 🔄 Ajoute lang bouton chanjman kamera
-    switchCameraButton.innerText = '🔄';
+    // Mete paramèt kamera yo
+    navigator.mediaDevices.getUserMedia({ 
+        video: { width: 2400, height: 2400, aspectRatio: 1 } 
+    })
+    .then(stream => {
+        video.srcObject = stream;
+        recordedChunks = []; // Reyinisyalize si te gen ansyen done
 
-    startCamera();
+        mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm; codecs=vp9' });
+
+        mediaRecorder.ondataavailable = event => {
+            if (event.data.size > 0) {
+                recordedChunks.push(event.data);
+            }
+        };
+
+        mediaRecorder.onstop = () => {
+            const blob = new Blob(recordedChunks, { type: 'video/mp4' });
+            const url = URL.createObjectURL(blob);
+
+            recordedVideo.src = url;
+            recordedVideo.style.display = 'block';
+            downloadButton.style.display = 'block';
+
+            // Bouton pou telechaje videyo a
+            downloadButton.onclick = () => {
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'recorded-video.mp4';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            };
+        };
+
+        // Aktive bouton rekòde a
+        startButton.onclick = () => {
+            mediaRecorder.start();
+            startButton.disabled = true;
+            stopButton.disabled = false;
+        };
+
+        // Bouton pou sispann anrejistreman
+        stopButton.onclick = () => {
+            mediaRecorder.stop();
+            stopButton.disabled = true;
+            startButton.disabled = false;
+        };
+    })
+    .catch(error => {
+        console.error('Error accessing the camera:', error);
+        alert('Nou pa ka jwenn aksè ak kamera ou. Tanpri verifye pèmisyon yo.');
+    });
 }
 
-function startCamera() {
-    navigator.mediaDevices.getUserMedia({ video: { facingMode: currentCamera } })
-        .then(stream => {
-            video.srcObject = stream;
-            mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
-            recordedChunks = [];
-
-            mediaRecorder.ondataavailable = event => {
-                if (event.data.size > 0) {
-                    recordedChunks.push(event.data);
-                }
-            };
-
-            mediaRecorder.onstop = () => {
-                const blob = new Blob(recordedChunks, { type: 'video/mp4' });
-                const url = URL.createObjectURL(blob);
-                const recordedVideo = document.getElementById('recordedVideo');
-
-                recordedVideo.src = url;
-                recordedVideo.style.display = 'block';
-                downloadButton.style.display = 'block';
-
-                downloadButton.onclick = () => {
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = 'recorded-video.mp4';
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                };
-            };
-
-            startButton.onclick = () => {
-                mediaRecorder.start();
-                startButton.style.display = 'none';
-                stopButton.style.display = 'block';
-            };
-
-            stopButton.onclick = () => {
-                mediaRecorder.stop();
-                startButton.style.display = 'block';
-                stopButton.style.display = 'none';
-            };
-
-        })
-        .catch(error => {
-            console.error('Error accessing the camera:', error);
-            alert('Nou pa ka jwenn aksè ak kamera ou. Tanpri verifye pèmisyon yo.');
-        });
-}
-
-// 🔄 Chanje Kamera Front ↔ Back
-function switchCamera() {
-    currentCamera = currentCamera === 'user' ? 'environment' : 'user';
-    startCamera();
-}
