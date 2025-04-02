@@ -71,15 +71,12 @@
         </section>
         
         <div class="camera-container" id="cameraScreen" style="display: none;">
-            <video id="video" autoplay playsinline></video>
+            <video id="video" autoplay></video>
             <img id="frame" class="video-frame" alt="Frame">
-            <button id="switchCamera">🔄</button>
             <button id="startRecording">🔴 Rekòde</button>
             <button id="stopRecording" disabled>⏹️ Stop</button>
             <video id="recordedVideo" controls style="display: none;"></video>
-            <button id="downloadVideo" style="display: none;">⬇️</button>
         </div>
-        
     
         <script>
             function openCamera(language) {
@@ -125,12 +122,11 @@
     <main class="container">
         <!-- 📌 Chanje imaj otomatikman selon aparèy la -->
         <picture>
-            <div class="camera-container" id="cameraScreen">
-                <video id="video" autoplay playsinline></video>
-                <canvas id="canvas"></canvas>
-                <button id="startRecording">🔴 Rekòde</button>
-                <button id="stopRecording" disabled>⏹️ Stop</button>
-                <video id="recordedVideo" controls style="display: none;"></video>
-                <button id="downloadVideo" style="display: none;"></button>
-            </div>
-            
+<div class="camera-container" id="cameraScreen">
+    <video id="video" autoplay playsinline></video>
+    <canvas id="canvas"></canvas>
+    <button id="startRecording">🔴 Rekòde</button>
+    <button id="stopRecording" disabled>⏹️ Stop</button>
+    <video id="recordedVideo" controls style="display: none;"></video>
+    <button id="downloadVideo" style="display: none;"></button>
+</div>
