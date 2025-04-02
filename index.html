@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+    <link rel="stylesheet" href="src/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evènman Legliz</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Background ak tèks sou li -->
+    <section class="first-background">
+        <img src="imaBack.JPG" alt="Premye Background">
+        <div class="text-overlay">
+            ESKE W NAN 40 LAN?<br>CHALLENGE
+        </div>
+    </section>
+
+    <!DOCTYPE html>
+<html lang="ht">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rekòde Videyo</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!DOCTYPE html>
+    <html lang="ht">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Rekòde Videyo</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <section class="second-background">
+            <img src="imaBack2.JPG" alt="Dezyèm Background" class="background-image">
+            <div class="overlay">
+                <div class="script-container">
+                    <h1>SCRIPT</h1>
+                    <div class="script-text">
+                        <div class="script-item">
+                            <h2>Français :</h2>
+                            <p>Je suis [ton nom], je suis à [ton emplacement],<br>
+                            J’ai une invitation spéciale pour toi !<br>
+                            Du 8 juin au 20 juillet, ce sont les 40 jours de jeûne sur Shekinah.fm.<br>
+                            Moi, j’y suis déjà. Et toi, est-ce que tu y seras ?</p>
+                            <button class="lang-btn" onclick="openCamera('fr')">TAPE ICI | FRANÇAIS</button>
+                        </div>
+                        <div class="script-item">
+                            <h2>English :</h2>
+                            <p>I am [your name], I am in [your location],<br>
+                            I have a special invitation for you!<br>
+                            From June 8th to July 20th, it’s 40 Days of Fasting on Shekinah.fm.<br>
+                            I’m already there. What about you, will you be there?</p>
+                            <button class="lang-btn" onclick="openCamera('en')">CLICK HERE | ENGLISH</button>
+                        </div>
+                        <div class="script-item">
+                            <h2>Kreyòl :</h2>
+                            <p>Mwen se [non ou], mwen nan [zòn kote ou ye a],<br>
+                            Mwen gen yon envitasyon espesyal pou ou!<br>
+                            Soti 8 jen rive 20 jiyè, se 40 Jou Jeûne sou Shekinah.fm.<br>
+                            Mwen m deja La , e ou menm eskew ap la ?</p>
+                            <button class="lang-btn" onclick="openCamera('ht')">KLIKE LA | KREYÒL</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <div class="camera-container" id="cameraScreen" style="display: none;">
+            <video id="video" autoplay playsinline></video>
+            <img id="frame" class="video-frame" alt="Frame">
+            <button id="switchCamera">🔄</button>
+            <button id="startRecording">🔴 Rekòde</button>
+            <button id="stopRecording" disabled>⏹️ Stop</button>
+            <video id="recordedVideo" controls style="display: none;"></video>
+            <button id="downloadVideo" style="display: none;">⬇️</button>
+        </div>
+        
+    
+        <script>
+            function openCamera(language) {
+                const frameImage = {
+                    'fr': 'Frame-fr.png',
+                    'en': 'Frame-en.png',
+                    'ht': 'Frame-ht.png'
+                };
+                
+                const cameraScreen = document.getElementById('cameraScreen');
+                const frame = document.getElementById('frame');
+                const video = document.getElementById('video');
+    
+                frame.src = frameImage[language];
+                cameraScreen.style.display = 'flex';
+                
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(stream => {
+                        video.srcObject = stream;
+                    })
+                    .catch(error => {
+                        console.error('Error accessing the camera:', error);
+                        alert('Nou pa ka jwenn aksè ak kamera ou. Tanpri verifye pèmisyon yo.');
+                    });
+            }
+        </script>
+    </body>
+    </html>
+    <!DOCTYPE html>
+<html lang="ht">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sit Responsif</title>
+    <link rel="stylesheet" href="style.css"> <!-- Lyen pou fichye CSS -->
+</head>
+<body>
+
+    <header>
+        <h1></h1>
+    </header>
+
+    <main class="container">
+        <!-- 📌 Chanje imaj otomatikman selon aparèy la -->
+        <picture>
+            <div class="camera-container" id="cameraScreen">
+                <video id="video" autoplay playsinline></video>
+                <canvas id="canvas"></canvas>
+                <button id="startRecording">🔴 Rekòde</button>
+                <button id="stopRecording" disabled>⏹️ Stop</button>
+                <video id="recordedVideo" controls style="display: none;"></video>
+                <button id="downloadVideo" style="display: none;"></button>
+            </div>
+            

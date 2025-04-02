@@ -1,0 +1,332 @@
+/* Premye background (imaBack.jpg) - Avèk text.png sou li */
+.first-background {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  text-align: center;
+  overflow: hidden; /* Anpeche scroll lateral */
+  background-color: white; /* Mete background si gen espas vid */
+}
+
+/* Background principal */
+.first-background img {
+  width: 110%;
+  height: 122%;
+  object-fit: cover; /* Kenbe imaj la san li pa koupe */
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* Ajoute text.png sou background */
+.text-overlay {
+  position: absolute;
+  width: 90%;
+  max-width: 800px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.text-overlay img {
+  width: 100%;
+  height: auto;
+  object-fit: contain; /* Asire li pa koupe */
+}
+
+/* Dezyèm background (imaBack2.jpg) */
+.second-background {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  text-align: center;
+  overflow: hidden;
+}
+
+.second-background img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* Overlay pou script yo */
+.overlay {
+  position: relative;
+  z-index: 2;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  width: 90%;
+  max-width: 600px;
+}
+/* 🌍 Default (Laptop & Desktop) */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+/* Fè imaj la sanble yon jan sou laptop */
+img {
+  width: 60%; /* Imaj la pi piti sou laptop */
+  border-radius: 20px; /* Fè bor yo wonn */
+  display: block;
+  margin: auto;
+}
+
+/* 📟 Tablèt */
+@media (max-width: 1024px) {
+  img {
+      width: 80%; /* Imaj la pi gwo sou tablèt */
+      border-radius: 10px; /* Fè bor yo mwens wonn */
+  }
+}
+
+/* 📱 Telefòn */
+@media (max-width: 768px) {
+  img {
+      width: 100%; /* Fè imaj la pi gwo sou telefòn */
+      border-radius: 0px; /* Retire bor wonn yo */
+  }
+}
+/* Tèks sou imaj la */
+.text-overlay {
+  position: absolute;
+  text-align: center;
+  font-size: 4rem; /* Gwo tèks */
+  font-weight: bold;
+  text-transform: uppercase; /* Mete tout an majiskil */
+  text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.7); /* Efè lonbraj */
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  width: 100%;
+  background: linear-gradient(45deg, #800080, #ff0000); /* Gradient mauve & wouj */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+#video {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  display: block;
+  border-radius: 10px;
+  background: black; /* Evite background transparan */
+}
+.camera-container {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.9);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 1000;
+}
+
+#video, #canvas {
+  position: absolute;
+  width: 100%;
+  max-width: 360px;
+  height: auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#startRecording, #stopRecording, #downloadVideo {
+  background-color: #ffcc00;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
+}
+
+#startRecording:hover, #stopRecording:hover, #downloadVideo:hover {
+  background-color: #ff9900;
+}
+
+#stopRecording[disabled] {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+/* Frame Overlay pou mete sou kamera a */
+#frame {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  z-index: 1001;
+  pointer-events: none; /* Evite moun klike sou li */
+}
+
+.camera-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: black;
+  z-index: 1000;
+}
+
+#video, #recordedVideo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+}
+
+.video-frame {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+button {
+  position: absolute;
+  bottom: 20px;
+  font-size: 1.5rem;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  background: rgba(255, 204, 0, 0.8);
+  color: black;
+  border-radius: 5px;
+}
+
+#startRecording { bottom: 80px; }
+#stopRecording { bottom: 80px; display: none; }
+#downloadVideo { bottom: 140px; display: none; }
+#switchCamera { top: 20px; right: 20px; }
+let mediaRecorder;
+let recordedChunks = [];
+let currentCamera = 'user';
+
+function openCamera(language) {
+    const frameImage = {
+        'fr': 'Frame-fr.png',
+        'en': 'Frame-en.png',
+        'ht': 'Frame-ht.png'
+    };
+
+    document.getElementById('frame').src = frameImage[language];
+    document.getElementById('cameraScreen').style.display = 'flex';
+
+    setButtonText(language);
+    startCamera();
+}
+
+function setButtonText(language) {
+    const langText = {
+        'fr': { record: '🔴 Enregistrer', stop: '⏹️ Arrêter', download: '⬇️ Télécharger' },
+        'en': { record: '🔴 Record', stop: '⏹️ Stop', download: '⬇️ Download' },
+        'ht': { record: '🔴 Rekòde', stop: '⏹️ Stop', download: '⬇️ Telechaje' }
+    };
+
+    document.getElementById('startRecording').innerText = langText[language].record;
+    document.getElementById('stopRecording').innerText = langText[language].stop;
+    document.getElementById('downloadVideo').innerText = langText[language].download;
+}
+
+function startCamera() {
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: currentCamera } })
+        .then(stream => {
+            const video = document.getElementById('video');
+            video.srcObject = stream;
+            setupRecorder(stream);
+        })
+        .catch(error => {
+            console.error('Error accessing camera:', error);
+            alert('Nou pa ka jwenn aksè ak kamera ou. Tanpri verifye pèmisyon yo.');
+        });
+}
+
+function setupRecorder(stream) {
+    mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
+    recordedChunks = [];
+
+    mediaRecorder.ondataavailable = event => {
+        if (event.data.size > 0) {
+            recordedChunks.push(event.data);
+        }
+    };
+
+    mediaRecorder.onstop = () => {
+        processVideo();
+    };
+}
+
+function processVideo() {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const video = document.getElementById('video');
+    const frame = document.getElementById('frame');
+
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    ctx.drawImage(frame, 0, 0, canvas.width, canvas.height);
+
+    canvas.toBlob(blob => {
+        const finalBlob = new Blob([blob], { type: 'video/mp4' });
+        const url = URL.createObjectURL(finalBlob);
+        const recordedVideo = document.getElementById('recordedVideo');
+        const downloadButton = document.getElementById('downloadVideo');
+
+        recordedVideo.src = url;
+        recordedVideo.style.display = 'block';
+        downloadButton.style.display = 'block';
+
+        downloadButton.onclick = () => {
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'recorded-video.mp4';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        };
+    }, 'video/mp4');
+}
+
+document.getElementById('startRecording').addEventListener('click', () => {
+    mediaRecorder.start();
+    document.getElementById('startRecording').style.display = 'none';
+    document.getElementById('stopRecording').style.display = 'block';
+});
+
+document.getElementById('stopRecording').addEventListener('click', () => {
+    mediaRecorder.stop();
+    document.getElementById('startRecording').style.display = 'block';
+    document.getElementById('stopRecording').style.display = 'none';
+});
+
+document.getElementById('switchCamera').addEventListener('click', () => {
+    currentCamera = currentCamera === 'user' ? 'environment' : 'user';
+    startCamera();
+});
