@@ -169,16 +169,30 @@ function startRecording() {
 function uploadAndDownloadMP4() {
   const blob = new Blob(chunks, { type: "video/webm" });
   const formData = new FormData();
-  formData.append("video", blob, "video.webm");
-// ✅ Log pou debogaj
-console.log("📤 Nap voye videyo sou backend...");
-console.log("🧱 Taille blob:", blob.size);
-fetch("https://api.cloudinary.com/v1_1/drlzwtqve/video/upload", {
+  formData.append("file", blob);
+  formData.append("upload_preset", "video_uploads");
+
+  fetch("https://api.cloudinary.com/v1_1/drlzwtqve/video/upload", {
     method: "POST",
     body: formData
   })
     .then(res => res.json())
-    .then(({ secure_url }) => {
+    .then(data => {
+      const mp4Url = data.secure_url.replace('/upload/', '/upload/f_mp4/');
+      fetch(mp4Url)
+      .then(res => res.blob())
+      .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = 'Eske w nan 40 lan.mp4';
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+      })
+      .catch(() => alert('Erè pandan telechajman videyo a'));  
+      // UI apre upload
       document.body.innerHTML = "";
       document.body.style.margin = "0";
       document.body.style.background = "#000";
@@ -189,7 +203,7 @@ fetch("https://api.cloudinary.com/v1_1/drlzwtqve/video/upload", {
       document.body.style.height = "100vh";
 
       const videoPreview = document.createElement("video");
-      videoPreview.src = secure_url;
+      videoPreview.src = mp4Url;
       videoPreview.controls = true;
       videoPreview.style.maxWidth = "90vw";
       videoPreview.style.maxHeight = "60vh";
@@ -204,7 +218,7 @@ fetch("https://api.cloudinary.com/v1_1/drlzwtqve/video/upload", {
       actionZone.style.gap = "20px";
 
       const downloadBtn = document.createElement("a");
-      downloadBtn.href = secure_url;
+      downloadBtn.href = mp4Url;
       downloadBtn.download = "video.mp4";
       downloadBtn.innerText = "⬇️ Telechaje";
       downloadBtn.style.padding = "10px 20px";
@@ -231,6 +245,7 @@ fetch("https://api.cloudinary.com/v1_1/drlzwtqve/video/upload", {
       console.error(err);
     });
 }
+
 function createBtn(icon) {
   const btn = document.createElement("button");
   btn.innerText = icon;
