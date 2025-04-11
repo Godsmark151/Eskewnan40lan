@@ -173,12 +173,12 @@ function uploadAndDownloadMP4() {
 // ✅ Log pou debogaj
 console.log("📤 Nap voye videyo sou backend...");
 console.log("🧱 Taille blob:", blob.size);
-  fetch("http://localhost:3000/upload", {
+fetch("https://api.cloudinary.com/v1_1/drlzwtqve/video/upload", {
     method: "POST",
     body: formData
   })
     .then(res => res.json())
-    .then(({ downloadUrl }) => {
+    .then(({ secure_url }) => {
       document.body.innerHTML = "";
       document.body.style.margin = "0";
       document.body.style.background = "#000";
@@ -189,7 +189,7 @@ console.log("🧱 Taille blob:", blob.size);
       document.body.style.height = "100vh";
 
       const videoPreview = document.createElement("video");
-      videoPreview.src = new URL(downloadUrl, location.origin).href;
+      videoPreview.src = secure_url;
       videoPreview.controls = true;
       videoPreview.style.maxWidth = "90vw";
       videoPreview.style.maxHeight = "60vh";
@@ -204,7 +204,7 @@ console.log("🧱 Taille blob:", blob.size);
       actionZone.style.gap = "20px";
 
       const downloadBtn = document.createElement("a");
-      downloadBtn.href = videoPreview.src;
+      downloadBtn.href = secure_url;
       downloadBtn.download = "video.mp4";
       downloadBtn.innerText = "⬇️ Telechaje";
       downloadBtn.style.padding = "10px 20px";
@@ -231,7 +231,6 @@ console.log("🧱 Taille blob:", blob.size);
       console.error(err);
     });
 }
-
 function createBtn(icon) {
   const btn = document.createElement("button");
   btn.innerText = icon;
