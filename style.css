@@ -1,17 +1,41 @@
+/* ✅ Normalize box-sizing */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* ✅ Base styles */
 body, html {
   margin: 0;
   padding: 0;
-  height: 100%;
+  min-height: 100dvh; /* ✅ Fit ak tout telefòn */
   font-family: 'Poppins', sans-serif;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 
+/* ✅ Background video */
+#bg-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  min-width: 100vw;
+  min-height: 100vh;
+  z-index: -1;
+  object-fit: cover;
+}
+
+/* Welcome and title */
 .first-background,
 .second-background {
   position: relative;
   width: 100%;
-  height: 100vh;
+  min-height: 100dvh; /* ✅ Pi bon pase 100vh pou mobil ak notch */
   overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
 .first-background img,
 .second-background img {
   width: 100%;
@@ -19,7 +43,6 @@ body, html {
   object-fit: cover;
 }
 
-/* Welcome text ak #F06711 san shadow */
 .welcome-text {
   position: absolute;
   top: 15%;
@@ -32,7 +55,6 @@ body, html {
   z-index: 11;
 }
 
-/* Eske w nan 40 lan text: original gradient */
 .text-overlay {
   position: absolute;
   top: 45%;
@@ -48,18 +70,7 @@ body, html {
   transition: opacity 1.5s ease-in-out;
 }
 
-
-/* Mobil responsive */
-@media (max-width: 768px) {
-  .text-overlay {
-    font-size: 2.4rem;
-    padding: 0 10px;
-  }
-  .welcome-text {
-    font-size: 1.3rem;
-  }
-}
-
+/* 📱 Scroll bounce button */
 .scroll-btn {
   background: rgba(0, 0, 0, 0.5);
   border: 1px solid white;
@@ -82,18 +93,7 @@ body, html {
   50% { transform: translate(-50%, 10px); }
 }
 
-.second-background {
-  margin: 0;
-  font-family: 'Poppins', sans-serif;
-  background: url('../imaback-second.jpg') no-repeat center center fixed;
-  background-size: cover;
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
+/* Grid lang section */
 .grid-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -134,12 +134,100 @@ body, html {
 .lang-button:hover {
   background-color: rgba(255, 255, 255, 0.4);
 }
-#bg-video {
-  position: fixed;
-  top: 0;
-  left: 0;
-  min-width: 100vw;
-  min-height: 100vh;
-  z-index: -1;
-  object-fit: cover;
+
+/* 🎥 iPhone-style record button */
+.record-btn {
+  width: 72px;
+  height: 72px;
+  border: 4px solid white;
+  border-radius: 50%;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.record-btn .inner-circle {
+  width: 36px;
+  height: 36px;
+  background: red;
+  border-radius: 8px;
+}
+
+/* ⏱️ Timer style */
+#timer {
+  font-size: 1.2rem;
+  font-weight: bold;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 6px 12px;
+  border-radius: 8px;
+  z-index: 10003;
+  color: white;
+  transition: color 0.3s ease;
+}
+
+/* 📤 Preview video style */
+.preview {
+  max-width: 90vw;
+  max-height: 60vh;
+  border: 4px solid #fff;
+  border-radius: 12px;
+}
+
+/* 📲 Action buttons */
+#preview-zone div a, 
+#preview-zone div button {
+  padding: 10px 20px;
+  font-weight: bold;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+#preview-zone div a {
+  background: #0f0;
+  color: #000;
+}
+
+#preview-zone div button {
+  background: #f00;
+  color: #fff;
+  border: none;
+}
+
+/* ✅ Mobile responsive tweaks */
+@media (max-width: 768px) {
+  .text-overlay {
+    font-size: 2.4rem;
+    padding: 0 10px;
+  }
+  .welcome-text {
+    font-size: 1.3rem;
+  }
+
+  .grid-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, auto);
+    height: auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .preview {
+    max-width: 95vw;
+    max-height: 50vh;
+  }
+
+  #preview-zone div a, 
+  #preview-zone div button {
+    font-size: 0.9rem;
+    padding: 8px 16px;
+  }
+}
+.lang-box p,
+.lang-box h2 {
+  color: white !important;
 }
