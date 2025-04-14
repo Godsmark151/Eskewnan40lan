@@ -10,103 +10,95 @@
 </head>
 <body>
 
-<!-- 📽️ Background videyo -->
-<video autoplay muted loop id="bg-video">
-  <source src="imaback-first.mp4" type="video/mp4" />
-  Navigatè ou pa sipòte HTML5 video.
-</video>
+  <!-- 📽️ Background videyo -->
+  <video autoplay muted loop id="bg-video">
+    <source src="imaback-first.mp4" type="video/mp4" />
+    Navigatè ou pa sipòte HTML5 video.
+  </video>
 
-<!-- 🌟 Welcome Section -->
-<section class="first-background">
-  <div class="welcome-text" id="welcomeText">_</div>
-  <div class="text-overlay" id="mainTitle" style="opacity: 0;">
-    Eske w nan 40 lan?<br />Challenge
-  </div>
-  <button id="scrollBtn" class="scroll-btn">↓</button>
-</section>
+  <!-- 🌟 Welcome Section -->
+  <section class="first-background">
+    <div class="welcome-text" id="welcomeText">_</div>
+    <div class="text-overlay" id="mainTitle" style="opacity: 0;">
+      Eske w nan 40 lan?<br />Challenge
+    </div>
+    <button id="scrollBtn" class="scroll-btn">↓</button>
+  </section>
 
-<script>
-  const welcomeText = document.getElementById("welcomeText");
-  const mainTitle = document.getElementById("mainTitle");
-  const scrollBtn = document.getElementById("scrollBtn");
+  <!-- 📷 Kamera Lang Interface -->
+  <section class="second-background" id="camera">
+    <div class="grid-container">
+      <div class="lang-box" data-lang="ht">
+        <h2>Kreyòl</h2>
+        <p>Mwen se [non ou], mwen nan [zòn kote ou ye a],<br>
+          Mwen gen yon envitasyon espesyal pou ou!<br>
+          Soti 8 jen rive 20 jiyè, se 40 Jou Jèn sou Shekinah.fm.<br>
+          Mwen menm deja la. E ou menm, èske w ap la ?</p>
+        <button class="lang-button">KLIKE LA | KREYÒL</button>
+      </div>
+      <div class="lang-box" data-lang="fr">
+        <h2>Français</h2>
+        <p>Je suis [ton nom], je suis à [ton emplacement],<br>
+          J'ai une invitation spéciale pour toi !<br>
+          Du 8 juin au 20 juillet, ce sont les 40 jours de jeûne sur Shekinah.fm.<br>
+          Moi, j’y suis déjà. Et toi, est-ce que tu y seras ?</p>
+        <button class="lang-button">TAPE ICI | FRANÇAIS</button>
+      </div>
+      <div class="lang-box" data-lang="en">
+        <h2>English</h2>
+        <p>I am [your name], I am in [your location],<br>
+          I have a special invitation for you!<br>
+          From June 8th to July 20th, it's 40 Days of Fasting on Shekinah.fm.<br>
+          I'm already there. What about you, will you be there?</p>
+        <button class="lang-button">CLICK HERE | ENGLISH</button>
+      </div>
+      <div class="lang-box" data-lang="es">
+        <h2>Español</h2>
+        <p>Soy [tu nombre], estoy en [tu ubicación],<br>
+          ¡Tengo una invitación especial para ti!<br>
+          Del 8 de junio al 20 de julio, son los 40 Días de Ayuno en Shekinah.fm.<br>
+          Yo ya estoy allí. ¿Y tú, estarás allí?</p>
+        <button class="lang-button">HAZ CLIC AQUÍ | ESPAÑOL</button>
+      </div>
+    </div>
 
-  const langMap = {
-    ht: "Byenvini nan",
-    fr: "Bienvenue dans",
-    en: "Welcome to",
-    es: "Bienvenido a"
-  };
+    <div id="preview-zone"></div>
+  </section>
 
-  const lang = navigator.language.slice(0, 2);
-  const message = langMap[lang] || "Welcome to";
+  <script>
+    const welcomeText = document.getElementById("welcomeText");
+    const mainTitle = document.getElementById("mainTitle");
+    const scrollBtn = document.getElementById("scrollBtn");
 
-  let i = 0;
-  function typeWriter() {
-    if (i <= message.length) {
-      welcomeText.innerText = message.substring(0, i) + "_";
-      i++;
-      setTimeout(typeWriter, 100);
-    } else {
-      welcomeText.innerText = message;
-      setTimeout(() => {
-        mainTitle.style.opacity = 1;
-      }, 1000);
+    const langMap = {
+      ht: "Byenvini nan",
+      fr: "Bienvenue dans",
+      en: "Welcome to",
+      es: "Bienvenido a"
+    };
+
+    const lang = navigator.language.slice(0, 2);
+    const message = langMap[lang] || "Welcome to";
+
+    let i = 0;
+    function typeWriter() {
+      if (i <= message.length) {
+        welcomeText.innerText = message.substring(0, i) + "_";
+        i++;
+        setTimeout(typeWriter, 100);
+      } else {
+        welcomeText.innerText = message;
+        setTimeout(() => {
+          mainTitle.style.opacity = 1;
+        }, 1000);
+      }
     }
-  }
-  typeWriter();
+    typeWriter();
 
-  scrollBtn.addEventListener("click", () => {
-    document.getElementById("camera")?.scrollIntoView({ behavior: "smooth" });
-  });
-</script>
-
-<!-- 📷 Kamera Lang Interface -->
-<section class="second-background" id="camera"
-  style="height: 100vh;
-         background: url(imaback-second.jpg) no-repeat center center / cover;
-         display: flex;
-         align-items: center;
-         justify-content: center;
-         font-size: 1.2rem;">
-  <div class="grid-container">
-    <div class="lang-box" data-lang="ht">
-      <h2>Kreyòl</h2>
-      <p>Mwen se [non ou], mwen nan [zòn kote ou ye a],<br>
-        Mwen gen yon envitasyon espesyal pou ou!<br>
-        Soti 8 jen rive 20 jiyè, se 40 Jou Jèn sou Shekinah.fm.<br>
-        Mwen menm deja la. E ou menm, èske w ap la ?</p>
-      <button class="lang-button">KLIKE LA | KREYÒL</button>
-    </div>
-    <div class="lang-box" data-lang="fr">
-      <h2>Français</h2>
-      <p>Je suis [ton nom], je suis à [ton emplacement],<br>
-        J'ai une invitation spéciale pour toi !<br>
-        Du 8 juin au 20 juillet, ce sont les 40 jours de jeûne sur Shekinah.fm.<br>
-        Moi, j’y suis déjà. Et toi, est-ce que tu y seras ?</p>
-      <button class="lang-button">TAPE ICI | FRANÇAIS</button>
-    </div>
-    <div class="lang-box" data-lang="en">
-      <h2>English</h2>
-      <p>I am [your name], I am in [your location],<br>
-        I have a special invitation for you!<br>
-        From June 8th to July 20th, it's 40 Days of Fasting on Shekinah.fm.<br>
-        I'm already there. What about you, will you be there?</p>
-      <button class="lang-button">CLICK HERE | ENGLISH</button>
-    </div>
-    <div class="lang-box" data-lang="es">
-      <h2>Español</h2>
-      <p>Soy [tu nombre], estoy en [tu ubicación],<br>
-        ¡Tengo una invitación especial para ti!<br>
-        Del 8 de junio al 20 de julio, son los 40 Días de Ayuno en Shekinah.fm.<br>
-        Yo ya estoy allí. ¿Y tú, estarás allí?</p>
-      <button class="lang-button">HAZ CLIC AQUÍ | ESPAÑOL</button>
-    </div>
-  </div>
-
-<!-- Zone preview videyo Cloudinary -->
-<div id="preview-zone"></div>
-</section>
+    scrollBtn.addEventListener("click", () => {
+      document.getElementById("camera")?.scrollIntoView({ behavior: "smooth" });
+    });
+  </script>
 
 </body>
 </html>
-
