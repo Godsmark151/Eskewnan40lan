@@ -23,7 +23,15 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   async function requestPermissions() {
-    stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: currentFacing }, audio: true });
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: { ideal: currentFacing } },
+        audio: true
+      });
+    } catch (err) {
+      alert("❌ Kamera pa ka louvri. Tanpri verifye pèmisyon ou oswa chanje navigatè.");
+      console.error(err);
+    }
   }
 
   async function hasMultipleCameras() {
@@ -40,32 +48,46 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   async function launchCameraInterface() {
-    document.body.innerHTML = "";
-    document.body.style.margin = "0";
-    document.body.style.background = "black";
+    // Kache seksyon ki deja la
+    document.querySelector(".first-background").style.display = "none";
+    document.querySelector(".second-background").style.display = "none";
 
+    // Kreye nouvo zòn entèfas
+    const cameraInterface = document.createElement("div");
+    cameraInterface.id = "camera-interface";
+    cameraInterface.style.position = "relative";
+    document.body.appendChild(cameraInterface);
+
+    // Video
     video = document.createElement("video");
     video.autoplay = true;
     video.playsInline = true;
     video.muted = true;
     video.srcObject = stream;
-    await video.play();
+    cameraInterface.appendChild(video);
 
+    // Overlay
     overlay = new Image();
     overlay.src = `images/overlay-${currentLang}.png`;
 
+    // Canvas
     canvas = document.createElement("canvas");
     ctx = canvas.getContext("2d");
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
     canvas.style.position = "fixed";
     canvas.style.top = "0";
     canvas.style.left = "0";
     canvas.style.width = "100%";
     canvas.style.height = "100%";
     canvas.style.objectFit = "cover";
-    document.body.appendChild(canvas);
+    cameraInterface.appendChild(canvas);
 
+    video.onloadedmetadata = () => {
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      video.play();
+    };
+
+    // Timer
     const timerDisplay = document.createElement("div");
     timerDisplay.id = "timer";
     timerDisplay.innerText = "00:00";
@@ -79,13 +101,14 @@ document.addEventListener("DOMContentLoaded", () => {
     timerDisplay.style.borderRadius = "6px";
     timerDisplay.style.fontSize = "14px";
     timerDisplay.style.zIndex = "10002";
-    document.body.appendChild(timerDisplay);
+    cameraInterface.appendChild(timerDisplay);
 
+    // Bouton Record
     const recordBtn = document.createElement("button");
     recordBtn.className = "record-btn";
-const redSquare = document.createElement("div");
-redSquare.className = "inner-circle";
-recordBtn.appendChild(redSquare);
+    const redSquare = document.createElement("div");
+    redSquare.className = "inner-circle";
+    recordBtn.appendChild(redSquare);
     recordBtn.style.position = "fixed";
     recordBtn.style.bottom = "30px";
     recordBtn.style.left = "50%";
@@ -97,17 +120,17 @@ recordBtn.appendChild(redSquare);
     recordBtn.style.background = "red";
     recordBtn.style.color = "white";
     recordBtn.style.zIndex = "10003";
-    document.body.appendChild(recordBtn);
+    cameraInterface.appendChild(recordBtn);
 
     recordBtn.onclick = () => {
       if (mediaRecorder && mediaRecorder.state === "recording") {
         mediaRecorder.stop();
         recordBtn.style.background = "red";
-        document.getElementById("timer").style.color = "white";
+        timerDisplay.style.color = "white";
       } else {
         startRecording();
         recordBtn.style.background = "gray";
-        document.getElementById("timer").style.color = "red";
+        timerDisplay.style.color = "red";
       }
     };
 
@@ -160,48 +183,69 @@ recordBtn.appendChild(redSquare);
       .then(res => res.json())
       .then(data => {
         const mp4Url = data.secure_url.replace('/upload/', '/upload/f_mp4/');
-        const videoPreview = document.createElement("video");
-        videoPreview.src = mp4Url;
-        videoPreview.controls = true;
-        videoPreview.autoplay = true;
-        videoPreview.style.maxWidth = "90vw";
-        videoPreview.style.maxHeight = "60vh";
-        videoPreview.style.border = "4px solid #fff";
-        videoPreview.style.borderRadius = "12px";
-
-        const downloadBtn = document.createElement("a");
-        downloadBtn.href = mp4Url;
-        downloadBtn.download = "Eske w nan 40 lan.mp4";
-        downloadBtn.innerText = "⬇️ Telechaje";
-        downloadBtn.style.padding = "10px 20px";
-        downloadBtn.style.background = "#0f0";
-        downloadBtn.style.color = "#000";
-        downloadBtn.style.borderRadius = "8px";
-        downloadBtn.style.textDecoration = "none";
-
-        const redoBtn = document.createElement("button");
-        redoBtn.innerText = "🔁 Rekòmanse";
-        redoBtn.style.padding = "10px 20px";
-        redoBtn.style.background = "#f00";
-        redoBtn.style.color = "#fff";
-        redoBtn.style.border = "none";
-        redoBtn.style.borderRadius = "8px";
-        redoBtn.onclick = () => window.location.reload();
-
-        const actionZone = document.createElement("div");
-        actionZone.style.marginTop = "20px";
-        actionZone.style.display = "flex";
-        actionZone.style.gap = "20px";
-        actionZone.appendChild(downloadBtn);
-        actionZone.appendChild(redoBtn);
-
-        document.body.innerHTML = "";
-        document.body.style.background = "#000";
-        document.body.appendChild(videoPreview);
-        document.body.appendChild(actionZone);
+        displayPreview(mp4Url);
       })
       .catch(err => {
         alert("❌ Erè pandan upload / konvèsyon!");
+        console.error(err);
+      });
+  }
+
+  function displayPreview(mp4Url) {
+    document.body.innerHTML = "";
+    document.body.style.background = "#000";
+
+    const videoPreview = document.createElement("video");
+    videoPreview.src = mp4Url;
+    videoPreview.controls = true;
+    videoPreview.autoplay = true;
+    videoPreview.className = "preview";
+    document.body.appendChild(videoPreview);
+
+    const downloadBtn = document.createElement("button");
+    downloadBtn.innerText = "⬇️ Telechaje";
+    downloadBtn.style.padding = "10px 20px";
+    downloadBtn.style.background = "#0f0";
+    downloadBtn.style.color = "#000";
+    downloadBtn.style.borderRadius = "8px";
+    downloadBtn.style.fontWeight = "bold";
+    downloadBtn.onclick = () => forceDownloadMP4(mp4Url);
+
+    const redoBtn = document.createElement("button");
+    redoBtn.innerText = "🔁 Rekòmanse";
+    redoBtn.style.padding = "10px 20px";
+    redoBtn.style.background = "#f00";
+    redoBtn.style.color = "#fff";
+    redoBtn.style.borderRadius = "8px";
+    redoBtn.style.marginLeft = "12px";
+    redoBtn.onclick = () => window.location.reload();
+
+    const actionZone = document.createElement("div");
+    actionZone.style.marginTop = "20px";
+    actionZone.style.display = "flex";
+    actionZone.style.justifyContent = "center";
+    actionZone.style.gap = "20px";
+    actionZone.appendChild(downloadBtn);
+    actionZone.appendChild(redoBtn);
+
+    document.body.appendChild(actionZone);
+  }
+
+  function forceDownloadMP4(mp4Url) {
+    fetch(mp4Url)
+      .then(res => res.blob())
+      .then(blob => {
+        const blobUrl = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = blobUrl;
+        a.download = "Eske-w-nan-40-lan.mp4";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(blobUrl);
+      })
+      .catch(err => {
+        alert("❌ Pa ka telechaje videyo a.");
         console.error(err);
       });
   }
