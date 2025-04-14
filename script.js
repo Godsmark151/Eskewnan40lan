@@ -74,6 +74,12 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector(".first-background").style.display = "none";
     document.querySelector(".second-background").style.display = "none";
 
+    const bgVideo = document.getElementById("bg-video");
+    if (bgVideo) {
+      bgVideo.pause();
+      bgVideo.style.display = "none";
+    }
+
     const cameraInterface = document.createElement("div");
     cameraInterface.id = "camera-interface";
     cameraInterface.style.position = "relative";
@@ -107,6 +113,12 @@ document.addEventListener("DOMContentLoaded", () => {
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
       video.play();
+
+      console.log("🔍 Diagnostic:");
+      console.log("MediaRecorder support:", typeof MediaRecorder !== "undefined");
+      console.log("canvas.captureStream support:", !!canvas.captureStream);
+      console.log("video width:", video.videoWidth);
+      console.log("video height:", video.videoHeight);
     };
 
     const timerDisplay = document.createElement("div");
@@ -168,12 +180,26 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function startRecording() {
+    if (!canvas.captureStream || typeof MediaRecorder === "undefined") {
+      alert("❌ Aparèy sa a pa sipòte anrejistreman videyo.");
+      return;
+    }
+
     chunks = [];
     canvasStream = canvas.captureStream(30);
-    audioTrack = stream.getAudioTracks()[0];
-    canvasStream.addTrack(audioTrack);
+    const audioTracks = stream.getAudioTracks();
+    if (audioTracks.length > 0) {
+      canvasStream.addTrack(audioTracks[0]);
+    }
 
-    mediaRecorder = new MediaRecorder(canvasStream, { mimeType: "video/webm" });
+    try {
+      mediaRecorder = new MediaRecorder(canvasStream, { mimeType: "video/webm" });
+    } catch (err) {
+      alert("❌ Enregistreur pa sipòte sou aparèy sa a.");
+      console.error(err);
+      return;
+    }
+
     mediaRecorder.ondataavailable = e => chunks.push(e.data);
     mediaRecorder.onstop = () => {
       clearInterval(timerInterval);
