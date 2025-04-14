@@ -3,17 +3,18 @@
   box-sizing: border-box;
 }
 
-/* ✅ Base styles */
-body, html {
+/* ✅ Scrollable base */
+html, body {
   margin: 0;
   padding: 0;
-  min-height: 100dvh; /* ✅ Fit ak tout telefòn */
+  height: auto;
+  min-height: 100dvh;
+  overflow-y: auto;
   font-family: 'Poppins', sans-serif;
-  overflow-x: hidden;
   scroll-behavior: smooth;
 }
 
-/* ✅ Background video */
+/* ✅ Background videyo */
 #bg-video {
   position: fixed;
   top: 0;
@@ -24,25 +25,76 @@ body, html {
   object-fit: cover;
 }
 
-/* Welcome and title */
+/* ✅ Seksyon prensipal */
 .first-background,
 .second-background {
   position: relative;
   width: 100%;
-  min-height: 100dvh; /* ✅ Pi bon pase 100vh pou mobil ak notch */
-  overflow: hidden;
+  min-height: 100dvh;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  overflow: visible;
 }
 
-.first-background img,
-.second-background img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+/* ✅ Kamera seksyon */
+#camera {
+  padding: 60px 0;
+  background: url(imaback-second.jpg) no-repeat center center / cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  flex-wrap: wrap;
+  overflow: visible;
 }
 
+/* ✅ Kontni lang */
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 20px;
+  width: 90%;
+  max-width: 1200px;
+  height: auto;
+}
+
+.lang-box {
+  background: rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.3s;
+}
+.lang-box:hover {
+  transform: scale(1.02);
+}
+.lang-box p,
+.lang-box h2 {
+  color: white !important;
+}
+
+.lang-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 2px solid white;
+  border-radius: 8px;
+  color: white;
+  font-size: 1em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.lang-button:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+/* ✅ Welcome */
 .welcome-text {
   position: absolute;
   top: 15%;
@@ -70,7 +122,7 @@ body, html {
   transition: opacity 1.5s ease-in-out;
 }
 
-/* 📱 Scroll bounce button */
+/* ✅ Scroll button */
 .scroll-btn {
   background: rgba(0, 0, 0, 0.5);
   border: 1px solid white;
@@ -87,55 +139,12 @@ body, html {
   transform: translateX(-50%);
   z-index: 20;
 }
-
 @keyframes bounce {
   0%, 100% { transform: translate(-50%, 0); }
   50% { transform: translate(-50%, 10px); }
 }
 
-/* Grid lang section */
-.grid-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  gap: 20px;
-  width: 90%;
-  max-width: 1200px;
-  height: 90%;
-}
-
-.lang-box {
-  background: rgba(0, 0, 0, 0.5);
-  padding: 20px;
-  border-radius: 16px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  transition: transform 0.3s;
-}
-
-.lang-box:hover {
-  transform: scale(1.02);
-}
-
-.lang-button {
-  margin-top: 20px;
-  padding: 10px 20px;
-  background-color: rgba(255, 255, 255, 0.2);
-  border: 2px solid white;
-  border-radius: 8px;
-  color: white;
-  font-size: 1em;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.lang-button:hover {
-  background-color: rgba(255, 255, 255, 0.4);
-}
-
-/* 🎥 iPhone-style record button */
+/* ✅ Bouton Record */
 .record-btn {
   width: 72px;
   height: 72px;
@@ -148,7 +157,6 @@ body, html {
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 }
-
 .record-btn .inner-circle {
   width: 36px;
   height: 36px;
@@ -156,7 +164,7 @@ body, html {
   border-radius: 8px;
 }
 
-/* ⏱️ Timer style */
+/* ✅ Timer */
 #timer {
   font-size: 1.2rem;
   font-weight: bold;
@@ -168,15 +176,13 @@ body, html {
   transition: color 0.3s ease;
 }
 
-/* 📤 Preview video style */
+/* ✅ Preview */
 .preview {
   max-width: 90vw;
   max-height: 60vh;
   border: 4px solid #fff;
   border-radius: 12px;
 }
-
-/* 📲 Action buttons */
 #preview-zone div a, 
 #preview-zone div button {
   padding: 10px 20px;
@@ -186,19 +192,17 @@ body, html {
   cursor: pointer;
   text-decoration: none;
 }
-
 #preview-zone div a {
   background: #0f0;
   color: #000;
 }
-
 #preview-zone div button {
   background: #f00;
   color: #fff;
   border: none;
 }
 
-/* ✅ Mobile responsive tweaks */
+/* ✅ Responsive tweaks */
 @media (max-width: 768px) {
   .text-overlay {
     font-size: 2.4rem;
@@ -207,27 +211,32 @@ body, html {
   .welcome-text {
     font-size: 1.3rem;
   }
-
   .grid-container {
     grid-template-columns: 1fr;
     grid-template-rows: repeat(4, auto);
     height: auto;
   }
 }
-
 @media (max-width: 600px) {
   .preview {
     max-width: 95vw;
     max-height: 50vh;
   }
-
   #preview-zone div a, 
   #preview-zone div button {
     font-size: 0.9rem;
     padding: 8px 16px;
   }
 }
-.lang-box p,
-.lang-box h2 {
-  color: white !important;
+
+/* ✅ Landscape fix */
+@media screen and (orientation: landscape) and (max-height: 500px) {
+  .welcome-text {
+    top: 8%;
+    font-size: 1rem;
+  }
+  .text-overlay {
+    top: 60%;
+    font-size: 2rem;
+  }
 }
