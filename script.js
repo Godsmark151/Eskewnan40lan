@@ -221,48 +221,26 @@ document.addEventListener("DOMContentLoaded", () => {
     const formData = new FormData();
     formData.append("file", blob);
     formData.append("upload_preset", "video_uploads");
-
+  
     fetch("https://api.cloudinary.com/v1_1/drlzwtqve/video/upload", {
       method: "POST",
       body: formData
     })
       .then(res => res.json())
       .then(data => {
-        const mp4Url = data.secure_url.replace('/upload/', '/upload/f_mp4/');
+        // ✅ Chwazi si overlay fèt lokal oswa sou Cloudinary
+        const transformation = (typeof canvas.captureStream === "function" && typeof MediaRecorder !== "undefined")
+          ? "f_mp4"
+          : `l_overlay-${currentLang}/f_mp4`;
+  
+        const mp4Url = data.secure_url.replace('/upload/', `/upload/${transformation}/`);
         displayPreview(mp4Url);
       })
       .catch(err => {
         alert("❌ Erè pandan upload / konvèsyon!");
         console.error(err);
       });
-  }
-
-  function forceDownloadMP4(mp4Url) {
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-    const isIOSSafari = isIOS && isSafari;
-
-    if (isIOSSafari) {
-      window.open(mp4Url, "_self");
-
-      const longPressMessage = {
-        ht: "✅ Peze long sou videyo a epi chwazi 'Sove videyo a'.",
-        en: "✅ Long press on the video and choose 'Save Video'.",
-        fr: "✅ Appuyez longuement sur la vidéo puis choisissez 'Enregistrer la vidéo'.",
-        es: "✅ Mantén presionado el video y elige 'Guardar video'."
-      };
-
-      alert(longPressMessage[currentLang] || longPressMessage.en);
-    } else {
-      const a = document.createElement("a");
-      a.href = mp4Url;
-      a.download = "Eske-w-nan-40-lan.mp4";
-      a.style.display = "none";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    }
-  }
+  }  
 
   function displayPreview(mp4Url) {
     document.body.innerHTML = "";
