@@ -213,10 +213,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function forceDownloadMP4(mp4Url) {
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    const isIOSSafari = isIOS && isSafari;
 
-    if (isIOS) {
+    if (isIOSSafari) {
       window.open(mp4Url, "_self");
-      alert("✅ Videyo a ouvri. Peze long sou li epi chwazi 'Sove videyo a'.");
+
+      const longPressMessage = {
+        ht: "✅ Peze long sou videyo a epi chwazi 'Sove videyo a'.",
+        en: "✅ Long press on the video and choose 'Save Video'.",
+        fr: "✅ Appuyez longuement sur la vidéo puis choisissez 'Enregistrer la vidéo'.",
+        es: "✅ Mantén presionado el video y elige 'Guardar video'."
+      };
+
+      alert(longPressMessage[currentLang] || longPressMessage.en);
     } else {
       const a = document.createElement("a");
       a.href = mp4Url;
