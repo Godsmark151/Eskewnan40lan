@@ -1,3 +1,12 @@
+// ✅ Ajoute sipò pou iPhone ak RecordRTC
+// Mete sa nan <head> ou:
+// <script src="https://www.webrtc-experiment.com/RecordRTC.js"></script>
+
+function isIphone() {
+  return /iPhone|iPad|iPod/i.test(navigator.userAgent);
+}
+
+let recorderRTC;
 document.addEventListener("DOMContentLoaded", () => {
   console.log("Mon projet est prêt !");
 
