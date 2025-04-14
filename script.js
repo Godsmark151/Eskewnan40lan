@@ -14,6 +14,13 @@ document.addEventListener("DOMContentLoaded", () => {
     es: "Por favor espera..."
   };
 
+  const errorMessages = {
+    ht: "❌ Kamera pa ka louvri. Tanpri verifye pèmisyon ou oswa eseye chanje navigatè a.",
+    en: "❌ Cannot open the camera. Please check permissions or try a different browser.",
+    fr: "❌ Impossible d’ouvrir la caméra. Vérifiez les autorisations ou essayez un autre navigateur.",
+    es: "❌ No se puede abrir la cámara. Verifica los permisos o prueba con otro navegador."
+  };
+
   document.querySelectorAll('.lang-button').forEach(button => {
     button.addEventListener('click', async () => {
       currentLang = button.parentElement.getAttribute('data-lang');
@@ -29,14 +36,9 @@ document.addEventListener("DOMContentLoaded", () => {
         audio: true
       });
     } catch (err) {
-      alert("❌ Kamera pa ka louvri. Tanpri verifye pèmisyon ou oswa chanje navigatè.");
+      alert(errorMessages[currentLang] || errorMessages.en);
       console.error(err);
     }
-  }
-
-  async function hasMultipleCameras() {
-    const devices = await navigator.mediaDevices.enumerateDevices();
-    return devices.filter(device => device.kind === 'videoinput').length > 1;
   }
 
   async function switchCamera() {
@@ -47,18 +49,40 @@ document.addEventListener("DOMContentLoaded", () => {
     await video.play();
   }
 
+  async function showSwitchButtonIfAvailable(parentElement) {
+    const devices = await navigator.mediaDevices.enumerateDevices();
+    const videoInputs = devices.filter(device => device.kind === 'videoinput');
+    if (videoInputs.length > 1) {
+      const switchBtn = document.createElement("button");
+      switchBtn.innerText = "🔄 Chanje Kamera";
+      switchBtn.style.position = "fixed";
+      switchBtn.style.top = "20px";
+      switchBtn.style.right = "20px";
+      switchBtn.style.padding = "10px 12px";
+      switchBtn.style.background = "rgba(255,255,255,0.2)";
+      switchBtn.style.color = "#fff";
+      switchBtn.style.border = "1px solid #fff";
+      switchBtn.style.borderRadius = "8px";
+      switchBtn.style.zIndex = "10004";
+      switchBtn.style.cursor = "pointer";
+      switchBtn.onclick = switchCamera;
+      parentElement.appendChild(switchBtn);
+    }
+  }
+
   async function launchCameraInterface() {
-    // Kache seksyon ki deja la
     document.querySelector(".first-background").style.display = "none";
     document.querySelector(".second-background").style.display = "none";
 
-    // Kreye nouvo zòn entèfas
     const cameraInterface = document.createElement("div");
     cameraInterface.id = "camera-interface";
     cameraInterface.style.position = "relative";
+    cameraInterface.style.height = "100dvh";
+    cameraInterface.style.overflowY = "auto";
     document.body.appendChild(cameraInterface);
 
-    // Video
+    await showSwitchButtonIfAvailable(cameraInterface);
+
     video = document.createElement("video");
     video.autoplay = true;
     video.playsInline = true;
@@ -66,11 +90,9 @@ document.addEventListener("DOMContentLoaded", () => {
     video.srcObject = stream;
     cameraInterface.appendChild(video);
 
-    // Overlay
     overlay = new Image();
     overlay.src = `images/overlay-${currentLang}.png`;
 
-    // Canvas
     canvas = document.createElement("canvas");
     ctx = canvas.getContext("2d");
     canvas.style.position = "fixed";
@@ -87,7 +109,6 @@ document.addEventListener("DOMContentLoaded", () => {
       video.play();
     };
 
-    // Timer
     const timerDisplay = document.createElement("div");
     timerDisplay.id = "timer";
     timerDisplay.innerText = "00:00";
@@ -103,7 +124,6 @@ document.addEventListener("DOMContentLoaded", () => {
     timerDisplay.style.zIndex = "10002";
     cameraInterface.appendChild(timerDisplay);
 
-    // Bouton Record
     const recordBtn = document.createElement("button");
     recordBtn.className = "record-btn";
     const redSquare = document.createElement("div");
@@ -191,16 +211,34 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
 
+  function forceDownloadMP4(mp4Url) {
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+
+    if (isIOS) {
+      window.open(mp4Url, "_self");
+      alert("✅ Videyo a ouvri. Peze long sou li epi chwazi 'Sove videyo a'.");
+    } else {
+      const a = document.createElement("a");
+      a.href = mp4Url;
+      a.download = "Eske-w-nan-40-lan.mp4";
+      a.style.display = "none";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+  }
+
   function displayPreview(mp4Url) {
     document.body.innerHTML = "";
     document.body.style.background = "#000";
+    document.body.style.overflowY = "auto";
+    document.body.style.height = "auto";
 
     const videoPreview = document.createElement("video");
     videoPreview.src = mp4Url;
     videoPreview.controls = true;
     videoPreview.autoplay = true;
     videoPreview.className = "preview";
-    document.body.appendChild(videoPreview);
 
     const downloadBtn = document.createElement("button");
     downloadBtn.innerText = "⬇️ Telechaje";
@@ -228,25 +266,6 @@ document.addEventListener("DOMContentLoaded", () => {
     actionZone.appendChild(downloadBtn);
     actionZone.appendChild(redoBtn);
 
-    document.body.appendChild(actionZone);
-  }
-
-  function forceDownloadMP4(mp4Url) {
-    fetch(mp4Url)
-      .then(res => res.blob())
-      .then(blob => {
-        const blobUrl = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = blobUrl;
-        a.download = "Eske-w-nan-40-lan.mp4";
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(blobUrl);
-      })
-      .catch(err => {
-        alert("❌ Pa ka telechaje videyo a.");
-        console.error(err);
-      });
+    document.body.replaceChildren(videoPreview, actionZone);
   }
 });
