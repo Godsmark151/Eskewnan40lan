@@ -41,33 +41,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  async function hasMultipleCameras() {
+    const devices = await navigator.mediaDevices.enumerateDevices();
+    return devices.filter(device => device.kind === 'videoinput').length > 1;
+  }
+
   async function switchCamera() {
     currentFacing = currentFacing === 'user' ? 'environment' : 'user';
     stream.getTracks().forEach(track => track.stop());
     await requestPermissions();
     video.srcObject = stream;
     await video.play();
-  }
-
-  async function showSwitchButtonIfAvailable(parentElement) {
-    const devices = await navigator.mediaDevices.enumerateDevices();
-    const videoInputs = devices.filter(device => device.kind === 'videoinput');
-    if (videoInputs.length > 1) {
-      const switchBtn = document.createElement("button");
-      switchBtn.innerText = "🔄 Chanje Kamera";
-      switchBtn.style.position = "fixed";
-      switchBtn.style.top = "20px";
-      switchBtn.style.right = "20px";
-      switchBtn.style.padding = "10px 12px";
-      switchBtn.style.background = "rgba(255,255,255,0.2)";
-      switchBtn.style.color = "#fff";
-      switchBtn.style.border = "1px solid #fff";
-      switchBtn.style.borderRadius = "8px";
-      switchBtn.style.zIndex = "10004";
-      switchBtn.style.cursor = "pointer";
-      switchBtn.onclick = switchCamera;
-      parentElement.appendChild(switchBtn);
-    }
   }
 
   async function launchCameraInterface() {
@@ -80,8 +64,6 @@ document.addEventListener("DOMContentLoaded", () => {
     cameraInterface.style.height = "100dvh";
     cameraInterface.style.overflowY = "auto";
     document.body.appendChild(cameraInterface);
-
-    await showSwitchButtonIfAvailable(cameraInterface);
 
     video = document.createElement("video");
     video.autoplay = true;
@@ -211,23 +193,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
 
-  function forceDownloadMP4(mp4Url) {
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-
-    if (isIOS) {
-      window.open(mp4Url, "_self");
-      alert("✅ Videyo a ouvri. Peze long sou li epi chwazi 'Sove videyo a'.");
-    } else {
-      const a = document.createElement("a");
-      a.href = mp4Url;
-      a.download = "Eske-w-nan-40-lan.mp4";
-      a.style.display = "none";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    }
-  }
-
   function displayPreview(mp4Url) {
     document.body.innerHTML = "";
     document.body.style.background = "#000";
@@ -240,14 +205,15 @@ document.addEventListener("DOMContentLoaded", () => {
     videoPreview.autoplay = true;
     videoPreview.className = "preview";
 
-    const downloadBtn = document.createElement("button");
+    const downloadBtn = document.createElement("a");
+    downloadBtn.href = mp4Url;
+    downloadBtn.download = "Eske-w-nan-40-lan.mp4";
     downloadBtn.innerText = "⬇️ Telechaje";
     downloadBtn.style.padding = "10px 20px";
     downloadBtn.style.background = "#0f0";
     downloadBtn.style.color = "#000";
     downloadBtn.style.borderRadius = "8px";
     downloadBtn.style.fontWeight = "bold";
-    downloadBtn.onclick = () => forceDownloadMP4(mp4Url);
 
     const redoBtn = document.createElement("button");
     redoBtn.innerText = "🔁 Rekòmanse";
