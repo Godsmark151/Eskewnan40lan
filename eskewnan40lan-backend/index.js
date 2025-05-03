@@ -55,11 +55,11 @@ app.post("/upload", upload.single("video"), (req, res) => {
     const token = Math.random().toString(36).substring(2, 15); // kreye token
     tokens.set(outputName, token); // sove token pou aksè
     setTimeout(() => {
-  fs.unlink(outputPath, err => {
-    if (err) console.error("❌ Pa ka efase videyo a:", err);
-    else console.log("🗑️ Videyo efase apre 10 minit:", outputName);
-  });
-}, 10 * 60 * 1000);
+      fs.unlink(outputPath, err => {
+        if (err) console.error("❌ Pa ka efase videyo a:", err);
+        else console.log("🗑️ Videyo efase apre 10 minit:", outputName);
+      });
+    }, 10 * 60 * 1000);
 
     return res.json({
       success: true,
