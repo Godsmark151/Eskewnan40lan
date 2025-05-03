@@ -42,7 +42,7 @@ app.post("/upload", upload.single("video"), (req, res) => {
   const outputName = `${req.file.filename}.mp4`;
   const outputPath = path.join("videos", outputName);
 
-  const cmd = `ffmpeg -i ${inputPath} -c:v libx264 -preset ultrafast -crf 23 ${outputPath}`;
+  const cmd = `./ffmpeg -i ${inputPath} -c:v libx264 -preset ultrafast -crf 23 ${outputPath}`;
 
   exec(cmd, (error, stdout, stderr) => {
     fs.unlink(inputPath, () => {}); // efase fichye webm lan
