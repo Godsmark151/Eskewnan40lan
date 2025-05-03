@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eske w nan 40 lan?</title>
+
+  <!-- ✅ Content Security Policy -->
+  <meta http-equiv="Content-Security-Policy" 
+        content="default-src 'self'; 
+                 script-src 'self' https://unpkg.com https://www.webrtc-experiment.com https://cdn.webrtc-experiment.com; 
+                 style-src 'self' https://fonts.googleapis.com; 
+                 font-src 'self' https://fonts.gstatic.com;
+                 media-src 'self' eskewnan40lan-backend.onrender.com ;
+                 connect-src 'self' https://eskewnan40lan.com https://eskewnan40lan-backend.onrender.com;">
+
+  <!-- External Libraries -->
+  <script src="https://www.webrtc-experiment.com/RecordRTC.js"></script>
+  <script src="https://cdn.webrtc-experiment.com/ffmpeg_asm.js"></script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <!-- Safari modal si Chrome sou iPhone -->
+  <div id="safari-modal" style="display: none;">
+    <div id="safari-modal-content">
+      <h2>⚠️ Enpòtan</h2>
+      <p>Chrome sou iPhone pa sipòte anrejistreman videyo.<br>
+         Tanpri ouvri sit sa a nan Safari pou ou ka kontinye anrejistre.</p>
+      <button id="close-safari-modal">Mwen konprann</button>
+    </div>
+  </div>
+
+  <!-- Kamera interface ap parèt otomatik -->
+  <section id="camera-interface"></section>
+</body>
+</html>
