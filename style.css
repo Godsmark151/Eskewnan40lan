@@ -136,7 +136,9 @@ button.action-btn:hover {
   vertical-align: middle;
   margin-right: 10px;
 }
-
+.hidden {
+  display: none;
+}
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
