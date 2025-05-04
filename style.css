@@ -15,7 +15,6 @@ video, canvas {
 
 /* 🎯 Rekò bouton */
 .record-btn {
-  position: fixed;
   bottom: 30px;
   left: 50%;
   transform: translateX(-50%);
@@ -52,7 +51,6 @@ video, canvas {
 
 /* 🔄 Switch Camera */
 .switch-btn {
-  position: fixed;
   top: 20px;
   right: 20px;
   padding: 10px;
@@ -62,10 +60,6 @@ video, canvas {
   color: #000;
   font-size: 20px;
   cursor: pointer;
-  switchBtn.style.bottom = "160px";
-  switchBtn.style.left = "50%";
-  switchBtn.style.transform = "translateX(-50%)";
-
 }
 
 
