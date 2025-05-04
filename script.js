@@ -321,7 +321,6 @@ function displayPreview(mp4Url) {
 
   const retryBtn = document.createElement("button");
   retryBtn.className = "action-btn";
-  retryBtn.innerText = buttonTexts[currentLang]?.retry || "🔁 Retry";
   retryBtn.onclick = async () => {
     await requestPermissions();
     launchCameraInterface();
