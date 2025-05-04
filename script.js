@@ -128,7 +128,7 @@ async function launchCameraInterface() {
   controlsContainer.style.left = "50%";
   controlsContainer.style.transform = "translateX(-50%)";
   controlsContainer.style.display = "flex";
-  controlsContainer.style.gap = "20px";
+  controlsContainer.style.gap = "60px";
   controlsContainer.classList.add("z-top");
 
   const recordBtn = document.createElement("button");
@@ -265,9 +265,21 @@ function uploadAndDownloadMP4() {
 async function uploadBlob(blob) {
   const formData = new FormData();
   formData.append("video", blob);
-
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 20000);
+
+  const waitDiv = document.createElement("div");
+  waitDiv.id = "wait-message";
+  waitDiv.innerHTML = `<span class="spinner"></span> ${waitMessages[currentLang] || waitMessages["en"]}`;
+  waitDiv.style.color = "#fff";
+  waitDiv.style.fontSize = "1.3rem";
+  waitDiv.style.marginTop = "30px";
+  waitDiv.style.textAlign = "center";
+  waitDiv.style.display = "flex";
+  waitDiv.style.justifyContent = "center";
+  waitDiv.style.alignItems = "center";
+  waitDiv.style.gap = "10px";
+  document.body.appendChild(waitDiv);
 
   try {
     const res = await fetch("https://eskewnan40lan-backend.onrender.com/upload", {
@@ -277,6 +289,7 @@ async function uploadBlob(blob) {
     });
 
     clearTimeout(timeoutId);
+    waitDiv.remove();
 
     if (!res.ok) throw new Error("⛔ Echec konvèsyon sou sèvè a");
     const data = await res.json();
