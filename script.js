@@ -191,12 +191,12 @@ function toggleRecording() {
     return;
   }
 
-  const innerCircle = document.querySelector(".inner-circle");
-  if (innerCircle) {
-    innerCircle.style.width = "30px";
-    innerCircle.style.height = "30px";
-    innerCircle.style.borderRadius = "8px";
-  }
+  startRecording();
+  timer.style.color = "red";
+  innerCircle.style.width = "30px";
+  innerCircle.style.height = "30px";
+  innerCircle.style.borderRadius = "8px";
+}
 
 }
 
