@@ -58,6 +58,16 @@ const waitMessages = {
 };
 
 document.addEventListener("DOMContentLoaded", async () => {
+  const modalData = safariMessages[currentLang];
+  const safariModal = document.getElementById("safari-modal");
+  if (safariModal) {
+    safariModal.querySelector("h2").innerHTML = modalData.title;
+    safariModal.querySelector("p").innerHTML = modalData.text;
+    safariModal.querySelector("button").innerText = modalData.button;
+    document.getElementById("close-safari-modal").addEventListener("click", () => {
+      safariModal.style.display = "none";
+    });
+  }
   if (isIphoneChrome()) {
     document.getElementById("safari-modal").style.display = "flex";
     return;
