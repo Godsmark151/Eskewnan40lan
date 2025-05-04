@@ -12,12 +12,7 @@ video, canvas {
   display: block;
   margin: auto;
 }
-
-/* 🎯 Rekò bouton */
-.record-btn {
-  bottom: 30px;
-  left: 50%;
-  transform: translateX(-50%);
+.record-btn, .switch-btn {
   width: 70px;
   height: 70px;
   border-radius: 50%;
@@ -36,6 +31,17 @@ video, canvas {
   border-radius: 8px;
 }
 
+.switch-btn {
+  font-size: 26px;
+  background: rgba(255,255,255,0.3);
+  color: black;
+}
+
+.switch-btn:hover {
+  background: rgba(255,255,255,0.5);
+}
+
+
 /* 🕒 Timer */
 #timer {
   position: fixed;
@@ -49,23 +55,6 @@ video, canvas {
   font-size: 1.1rem;
 }
 
-/* 🔄 Switch Camera */
-.switch-btn {
-  top: 20px;
-  right: 20px;
-  padding: 10px;
-  background: rgba(255,255,255,0.3);
-  border: none;
-  border-radius: 8px;
-  color: #000;
-  font-size: 20px;
-  cursor: pointer;
-}
-
-
-.switch-btn:hover {
-  background: rgba(255,255,255,0.5);
-}
 
 /* ⚠️ Safari Modal */
 #safari-modal {
