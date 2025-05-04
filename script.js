@@ -272,7 +272,7 @@ async function uploadBlob(blob) {
   const timeoutId = setTimeout(() => controller.abort(), 20000);
 
   try {
-    const res = await fetch("https://eskewnan40lan-backend.onrender.com/upload", {
+    const mp4Url = `https://eskewnan40lan-backend.onrender.com/video/${filename}?token=${token}`;
       method: "POST",
       body: formData,
       signal: controller.signal
