@@ -191,11 +191,13 @@ function toggleRecording() {
     return;
   }
 
-  startRecording();
-  timer.style.color = "red";
-  innerCircle.style.width = "30px";
-  innerCircle.style.height = "30px";
-  innerCircle.style.borderRadius = "8px";
+  const innerCircle = document.querySelector(".inner-circle");
+  if (innerCircle) {
+    innerCircle.style.width = "30px";
+    innerCircle.style.height = "30px";
+    innerCircle.style.borderRadius = "8px";
+  }
+
 }
 
 function startRecording() {
