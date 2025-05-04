@@ -220,7 +220,11 @@ function startRecording() {
     secondsElapsed++;
     const min = String(Math.floor(secondsElapsed / 60)).padStart(2, '0');
     const sec = String(secondsElapsed % 60).padStart(2, '0');
-    document.getElementById("timer").innerText = `${min}:${sec}`;
+    const timerElem = document.getElementById("timer");
+    if (timerElem) {
+      timerElem.innerText = `${min}:${sec}`;
+    }
+
 
     if (secondsElapsed >= 60) {
       if (recorderRTC && recorderRTC.getState() === "recording") {
