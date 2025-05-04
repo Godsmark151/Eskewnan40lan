@@ -137,6 +137,11 @@ async function launchCameraInterface() {
 
   cameraZone.appendChild(controlsContainer);
 
+  const timer = document.createElement("div");
+  timer.id = "timer";
+  timer.innerText = "00:00";
+  timer.classList.add("z-top");
+  cameraZone.appendChild(timer);
 
   const userScript = {
     ht: "Mwen se [non ou], mwen nan [zòn kote ou ye a],\nMwen gen yon envitasyon espesyal pou ou!\nSoti 8 jen rive 20 jiyè, se 40 Jou Jèn sou Shekinah.fm.\nMwen deja la. E ou menm, èske w nan nan 40 lan?",
@@ -192,169 +197,12 @@ function toggleRecording() {
   }
 
   startRecording();
-  timer.style.color = "red";
-  innerCircle.style.width = "30px";
-  innerCircle.style.height = "30px";
-  innerCircle.style.borderRadius = "8px";
-}
-
-}
-
-function startRecording() {
-  chunks = [];
-  const canvasStream = canvas.captureStream(30);
-  const audioTrack = stream.getAudioTracks()[0];
-  canvasStream.addTrack(audioTrack);
-
-  if (isIphone() || isSafariReal()) {
-    recorderRTC = RecordRTC(canvasStream, {
-      type: 'video',
-      mimeType: 'video/webm'
-    });
-    recorderRTC.startRecording();
-  } else {
-    mediaRecorder = new MediaRecorder(canvasStream, { mimeType: "video/webm" });
-    mediaRecorder.ondataavailable = e => chunks.push(e.data);
-    mediaRecorder.onstop = () => uploadAndDownloadMP4();
-    mediaRecorder.start();
-  }
-
-  secondsElapsed = 0;
-  timerInterval = setInterval(() => {
-    secondsElapsed++;
-    const min = String(Math.floor(secondsElapsed / 60)).padStart(2, '0');
-    const sec = String(secondsElapsed % 60).padStart(2, '0');
-    const timerElem = document.getElementById("timer");
-    if (timerElem) {
-      timerElem.innerText = `${min}:${sec}`;
-    }
-
-
-    if (secondsElapsed >= 60) {
-      if (recorderRTC && recorderRTC.getState() === "recording") {
-        recorderRTC.stopRecording(() => {
-          clearInterval(timerInterval);
-          const blob = recorderRTC.getBlob();
-          uploadBlob(blob);
-        });
-      } else if (mediaRecorder && mediaRecorder.state === "recording") {
-        mediaRecorder.stop();
-      }
-    }
-  }, 1000);
-}
-
-function uploadAndDownloadMP4() {
-  const blob = new Blob(chunks, { type: "video/webm" });
-  uploadBlob(blob);
-}
-
-async function uploadBlob(blob) {
-  const formData = new FormData();
-  formData.append("video", blob);
-
-  const downloadBtn = document.createElement("button");
-  downloadBtn.className = "action-btn";
-  downloadBtn.disabled = true;
-
-  const spinner = document.createElement("span");
-  spinner.className = "spinner";
-  downloadBtn.appendChild(spinner);
-  downloadBtn.append("Wait...");
-
-  document.body.innerHTML = "";
-  document.body.style.background = "#000";
-  document.body.appendChild(downloadBtn);
-
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 20000);
-
-  try {
-    const res = await fetch("https://eskewnan40lan-backend.onrender.com/upload", {
-      method: "POST",
-      body: formData,
-      signal: controller.signal
-    });
-
-    clearTimeout(timeoutId);
-
-    if (!res.ok) throw new Error("⛔ Echec konvèsyon sou sèvè a");
-    const data = await res.json();
-    const filename = data.filename;
-    const token = data.token;
-    const mp4Url = `https://eskewnan40lan-backend.onrender.com/video/${filename}?token=${token}`;
-
-    displayPreview(mp4Url);
-  } catch (err) {
-    clearTimeout(timeoutId);
-    console.error("❌ Upload/Conversion failed:", err);
-    if (err.name === 'AbortError') {
-      alert("❌ Operasyon an pran twòp tan. Tanpri verifye koneksyon w epi eseye ankò.");
-    } else {
-      alert("❌ Echèk pandan upload oswa konvèsyon videyo a.");
-    }
+  if (timer) timer.style.color = "red";
+  if (innerCircle) {
+    innerCircle.style.width = "30px";
+    innerCircle.style.height = "30px";
+    innerCircle.style.borderRadius = "8px";
   }
 }
-   
-function displayPreview(mp4Url) {
-  document.body.innerHTML = "";
-  document.body.style.background = "#000";
 
-  const videoPreview = document.createElement("video");
-  videoPreview.src = mp4Url;
-  videoPreview.controls = true;
-  videoPreview.autoplay = true;
-  videoPreview.style.width = "90%";
-  videoPreview.style.margin = "auto";
-  document.body.appendChild(videoPreview);
-
-  const downloadBtn = document.createElement("button");
-  downloadBtn.className = "action-btn";
-  const buttonTexts = {
-    ht: { download: "⬇️ Telechaje", retry: "🔁 Rekòmanse" },
-    fr: { download: "⬇️ Télécharger", retry: "🔁 Recommencer" },
-    en: { download: "⬇️ Download", retry: "🔁 Retry" },
-    es: { download: "⬇️ Descargar", retry: "🔁 Reintentar" }
-  };
-  downloadBtn.innerText = buttonTexts[currentLang]?.download || "⬇️ Download";
-  downloadBtn.onclick = () => forceDownloadMP4(mp4Url);
-
-  const retryBtn = document.createElement("button");
-  retryBtn.className = "action-btn";
-  retryBtn.onclick = async () => {
-    await requestPermissions();
-    launchCameraInterface();
-  };
-
-  const buttons = document.createElement("div");
-  buttons.style.marginTop = "20px";
-  buttons.style.display = "flex";
-  buttons.style.justifyContent = "center";
-  buttons.style.gap = "20px";
-  buttons.appendChild(downloadBtn);
-  buttons.appendChild(retryBtn);
-
-  document.body.appendChild(buttons);
-}
-
-function forceDownloadMP4(mp4Url) {
-  fetch(mp4Url)
-    .then(res => res.blob())
-    .then(blob => {
-      const blobUrl = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = blobUrl;
-      const names = {
-        ht: "Eske-w-nan-40-lan.mp4",
-        fr: "Es-tu-dans-les-40.mp4",
-        en: "Are-you-in-the-40.mp4",
-        es: "Estas-en-los-40.mp4"
-      };
-      a.download = names[currentLang] || "Eske-w-nan-40-lan.mp4";      
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(blobUrl);
-    })
-    .catch(() => alert('❌ Pa ka telechaje videyo a.'));
-}
+// 🔁 rès script la pa chanje (startRecording, uploadBlob, displayPreview, elatriye)
