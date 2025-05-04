@@ -203,7 +203,6 @@ function toggleRecording() {
     innerCircle.style.borderRadius = "8px";
   }
 }
-
 function startRecording() {
   chunks = [];
   const canvasStream = canvas.captureStream(30);
@@ -246,6 +245,7 @@ function startRecording() {
     }
   }, 1000);
 }
+
 function uploadAndDownloadMP4() {
   const blob = new Blob(chunks, { type: "video/webm" });
   uploadBlob(blob);
