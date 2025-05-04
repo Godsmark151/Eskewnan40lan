@@ -121,12 +121,14 @@ async function launchCameraInterface() {
   controlsContainer.style.gap = "20px";
   controlsContainer.classList.add("z-top");
 
+// 🎯 Bouton record
   const recordBtn = document.createElement("button");
   recordBtn.className = "record-btn";
   recordBtn.innerHTML = `<div class="inner-circle"></div>`;
   recordBtn.onclick = () => toggleRecording();
   controlsContainer.appendChild(recordBtn);
 
+// 🔄 Bouton switch camera
   if (await hasMultipleCameras()) {
     const switchBtn = document.createElement("button");
     switchBtn.className = "switch-btn";
@@ -137,11 +139,6 @@ async function launchCameraInterface() {
 
   cameraZone.appendChild(controlsContainer);
 
-  const timer = document.createElement("div");
-  timer.id = "timer";
-  timer.innerText = "00:00";
-  timer.classList.add("z-top");
-  cameraZone.appendChild(timer);
 
   const userScript = {
     ht: "Mwen se [non ou], mwen nan [zòn kote ou ye a],\nMwen gen yon envitasyon espesyal pou ou!\nSoti 8 jen rive 20 jiyè, se 40 Jou Jèn sou Shekinah.fm.\nMwen deja la. E ou menm, èske w nan nan 40 lan?",
@@ -195,14 +192,14 @@ function toggleRecording() {
     clearInterval(timerInterval);
     return;
   }
+
   startRecording();
-  if (timer) timer.style.color = "red";
-  if (innerCircle) {
-    innerCircle.style.width = "30px";
-    innerCircle.style.height = "30px";
-    innerCircle.style.borderRadius = "8px";
-  }
+  timer.style.color = "red";
+  innerCircle.style.width = "30px";
+  innerCircle.style.height = "30px";
+  innerCircle.style.borderRadius = "8px";
 }
+
 function startRecording() {
   chunks = [];
   const canvasStream = canvas.captureStream(30);
@@ -227,10 +224,7 @@ function startRecording() {
     secondsElapsed++;
     const min = String(Math.floor(secondsElapsed / 60)).padStart(2, '0');
     const sec = String(secondsElapsed % 60).padStart(2, '0');
-    const timerElem = document.getElementById("timer");
-    if (timerElem) {
-      timerElem.innerText = `${min}:${sec}`;
-    }
+    document.getElementById("timer").innerText = `${min}:${sec}`;
 
     if (secondsElapsed >= 60) {
       if (recorderRTC && recorderRTC.getState() === "recording") {
@@ -284,7 +278,7 @@ async function uploadBlob(blob) {
     const data = await res.json();
     const filename = data.filename;
     const token = data.token;
-    const mp4Url = `https://eskewnan40lan-backend.onrender.com/video/${filename}?token=${token}`;
+    const mp4Url = `https://eskewnan40lan-backend.onrender.com/${filename}?token=${token}`;
 
     displayPreview(mp4Url);
   } catch (err) {
@@ -361,7 +355,3 @@ function forceDownloadMP4(mp4Url) {
     })
     .catch(() => alert('❌ Pa ka telechaje videyo a.'));
 }
-
-
-  
-// 🔁 rès script la pa chanje (startRecording, uploadBlob, displayPreview, elatriye)
