@@ -32,10 +32,18 @@ video, canvas {
 }
 
 .switch-btn {
-  font-size: 26px;
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  padding: 10px;
   background: rgba(255,255,255,0.3);
-  color: black;
+  border: none;
+  border-radius: 8px;
+  color: #000;
+  font-size: 20px;
+  cursor: pointer;
 }
+
 
 .switch-btn:hover {
   background: rgba(255,255,255,0.5);
