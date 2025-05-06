@@ -130,6 +130,7 @@ async function launchCameraInterface() {
   controlsContainer.style.display = "flex";
   controlsContainer.style.gap = "60px";
   controlsContainer.classList.add("z-top");
+  controlsContainer.classList.add("button-container");
 
   const recordBtn = document.createElement("button");
   recordBtn.className = "record-btn";
