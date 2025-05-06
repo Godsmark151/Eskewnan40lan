@@ -266,7 +266,7 @@ async function uploadBlob(blob) {
   const formData = new FormData();
   formData.append("video", blob);
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 20000);
+  const timeoutId = setTimeout(() => controller.abort(), 90000);
 
   const waitDiv = document.createElement("div");
   waitDiv.id = "wait-message";
