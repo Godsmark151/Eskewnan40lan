@@ -11,6 +11,8 @@
   cursor: pointer;
   position: relative;
   transition: all 0.3s ease;
+  z-index: 10001;
+  position: relative;
 }
 
 .record-btn .inner-circle {
@@ -31,6 +33,8 @@
   padding: 8px 14px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  z-index: 10001;
+  position: relative;
 }
 
 .switch-btn:hover {
@@ -47,6 +51,8 @@
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
+  z-index: 10001;
+  position: relative;
 }
 
 .action-btn:hover {
@@ -85,4 +91,8 @@
   background-color: rgba(0, 0, 0, 0.4);
   padding: 4px 12px;
   border-radius: 6px;
+  z-index: 10001;
+}
+#camera-interface > div {
+  z-index: 10001;
 }
