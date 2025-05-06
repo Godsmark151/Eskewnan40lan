@@ -91,10 +91,8 @@ async function requestPermissions() {
 }
 
 async function launchCameraInterface() {
-  document.body.replaceChildren();
-  const cameraZone = document.createElement("div");
-  cameraZone.id = "camera-interface";
-  document.body.appendChild(cameraZone);
+  const cameraZone = document.getElementById("camera-interface");
+  cameraZone.innerHTML = "";
 
   video = document.createElement("video");
   video.autoplay = true;
@@ -129,8 +127,7 @@ async function launchCameraInterface() {
   controlsContainer.style.transform = "translateX(-50%)";
   controlsContainer.style.display = "flex";
   controlsContainer.style.gap = "60px";
-  controlsContainer.classList.add("z-top");
-  controlsContainer.classList.add("button-container");
+  controlsContainer.classList.add("z-top", "button-container");
 
   const recordBtn = document.createElement("button");
   recordBtn.className = "record-btn";
@@ -146,8 +143,14 @@ async function launchCameraInterface() {
     switchBtn.onclick = switchCamera;
     controlsContainer.appendChild(switchBtn);
   }
-  console.log("Ajoute controlsContainer...");
+
+  console.log("✅ Ajoute controlsContainer");
   cameraZone.appendChild(controlsContainer);
+
+  // pa bliye drawLoop()
+  drawLoop();
+}
+
 
 
   const timer = document.createElement("div");
