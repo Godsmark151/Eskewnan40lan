@@ -27,6 +27,14 @@ video, canvas {
   z-index: 10001;
   position: relative;
 }
+
+.record-btn .inner-circle {
+  width: 16px;
+  height: 16px;
+  background-color: red;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+
 .switch-btn {
   font-size: 24px;
   background-color: rgba(255, 255, 255, 0.2);
@@ -38,26 +46,6 @@ video, canvas {
   transition: background-color 0.3s ease;
   z-index: 10001;
   position: relative;
-}
-
-.record-btn .inner-circle {
-  width: 36px;
-  height: 36px;
-  background: red;
-  border-radius: 8px;
-}
-
-.switch-btn {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  padding: 10px;
-  background: rgba(255,255,255,0.3);
-  border: none;
-  border-radius: 8px;
-  color: #000;
-  font-size: 20px;
-  cursor: pointer;
 }
 
 
@@ -72,13 +60,13 @@ video, canvas {
   top: 20px;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(0,0,0,0.5);
-  color: #fff;
-  padding: 6px 10px;
+  font-size: 1.4rem;
+  color: white;
+  font-weight: bold;
+  background-color: rgba(0, 0, 0, 0.4);
+  padding: 4px 12px;
   border-radius: 6px;
-  font-size: 1.1rem;
 }
-
 
 /* ⚠️ Safari Modal */
 #safari-modal {
@@ -116,20 +104,20 @@ video, canvas {
 }
 
 /* 📦 Apre-upload bouton */
-button.action-btn {
-  padding: 12px 20px;
-  margin: 15px;
-  font-size: 1rem;
+.action-btn {
+  font-size: 18px;
+  padding: 10px 20px;
+  border: 2px solid white;
+  background: transparent;
+  color: white;
   border-radius: 8px;
   cursor: pointer;
-  background: linear-gradient(to right, #6e0096, #c900f0);
-  color: white;
-  border: none;
-  transition: background 0.3s;
+  transition: all 0.3s ease;
 }
 
-button.action-btn:hover {
-  background: linear-gradient(to right, #9500ff, #f009d3);
+.action-btn:hover {
+  background-color: white;
+  color: black;
 }
 
 /* ✅ Z-index correction for CSP-safe buttons */
@@ -138,15 +126,12 @@ button.action-btn:hover {
   position: relative;
 }
 .spinner {
-  border: 4px solid rgba(255, 255, 255, 0.3);
-  border-top: 4px solid white;
-  border-radius: 50%;
   width: 20px;
   height: 20px;
+  border: 3px solid #fff;
+  border-top: 3px solid #999;
+  border-radius: 50%;
   animation: spin 1s linear infinite;
-  display: inline-block;
-  vertical-align: middle;
-  margin-right: 10px;
 }
 .hidden {
   display: none;
