@@ -91,8 +91,10 @@ async function requestPermissions() {
 }
 
 async function launchCameraInterface() {
-  const cameraZone = document.getElementById("camera-interface");
-  cameraZone.innerHTML = "";
+  document.body.replaceChildren();
+  const cameraZone = document.createElement("div");
+  cameraZone.id = "camera-interface";
+  document.body.appendChild(cameraZone);
 
   video = document.createElement("video");
   video.autoplay = true;
@@ -127,7 +129,7 @@ async function launchCameraInterface() {
   controlsContainer.style.transform = "translateX(-50%)";
   controlsContainer.style.display = "flex";
   controlsContainer.style.gap = "60px";
-  controlsContainer.classList.add("z-top", "button-container");
+  controlsContainer.classList.add("z-top");
 
   const recordBtn = document.createElement("button");
   recordBtn.className = "record-btn";
@@ -135,8 +137,7 @@ async function launchCameraInterface() {
   recordBtn.onclick = () => toggleRecording();
   controlsContainer.appendChild(recordBtn);
 
-  const multiCam = await hasMultipleCameras();
-  if (multiCam) {
+  if (await hasMultipleCameras()) {
     const switchBtn = document.createElement("button");
     switchBtn.className = "switch-btn";
     switchBtn.innerText = "🔄";
@@ -144,7 +145,6 @@ async function launchCameraInterface() {
     controlsContainer.appendChild(switchBtn);
   }
 
-  console.log("✅ Ajoute controlsContainer");
   cameraZone.appendChild(controlsContainer);
 
   const timer = document.createElement("div");
