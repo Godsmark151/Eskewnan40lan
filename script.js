@@ -146,7 +146,7 @@ async function launchCameraInterface() {
     switchBtn.onclick = switchCamera;
     controlsContainer.appendChild(switchBtn);
   }
-
+  console.log("Ajoute controlsContainer...");
   cameraZone.appendChild(controlsContainer);
 
 
