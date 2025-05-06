@@ -270,16 +270,27 @@ async function uploadBlob(blob) {
 
   const waitDiv = document.createElement("div");
   waitDiv.id = "wait-message";
-  waitDiv.innerHTML = `<span class="spinner"></span> ${waitMessages[currentLang] || waitMessages["en"]}`;
-  waitDiv.style.color = "#fff";
-  waitDiv.style.fontSize = "1.3rem";
-  waitDiv.style.marginTop = "30px";
-  waitDiv.style.textAlign = "center";
+  waitDiv.style.position = "fixed";
+  waitDiv.style.top = "0";
+  waitDiv.style.left = "0";
+  waitDiv.style.width = "100%";
+  waitDiv.style.height = "100%";
+  waitDiv.style.backgroundColor = "rgba(0, 0, 0, 0.8)";
   waitDiv.style.display = "flex";
+  waitDiv.style.flexDirection = "column";
   waitDiv.style.justifyContent = "center";
   waitDiv.style.alignItems = "center";
-  waitDiv.style.gap = "10px";
+  waitDiv.style.zIndex = "10002";
+  waitDiv.style.color = "#fff";
+  waitDiv.style.fontSize = "1.4rem";
+
+  waitDiv.innerHTML = `
+    <div class="spinner" style="margin-bottom: 16px; width: 40px; height: 40px; border: 5px solid #fff; border-top: 5px solid #999; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+    <div>${waitMessages[currentLang] || waitMessages["en"]}</div>
+  `;
+
   document.body.appendChild(waitDiv);
+
 
   try {
     const res = await fetch("https://eskewnan40lan-backend.onrender.com/upload", {
