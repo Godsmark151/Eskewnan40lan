@@ -12,16 +12,32 @@ video, canvas {
   display: block;
   margin: auto;
 }
-.record-btn, .switch-btn {
-  width: 70px;
-  height: 70px;
+.record-btn {
+  width: 60px;
+  height: 60px;
+  border: 3px solid white;
   border-radius: 50%;
-  border: 4px solid white;
-  background: white;
+  background-color: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+  z-index: 10001;
+  position: relative;
+}
+.switch-btn {
+  font-size: 24px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 2px solid white;
+  border-radius: 12px;
+  color: white;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  z-index: 10001;
+  position: relative;
 }
 
 .record-btn .inner-circle {
