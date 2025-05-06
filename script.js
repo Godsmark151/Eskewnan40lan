@@ -147,10 +147,6 @@ async function launchCameraInterface() {
   console.log("✅ Ajoute controlsContainer");
   cameraZone.appendChild(controlsContainer);
 
-}
-
-
-
   const timer = document.createElement("div");
   timer.id = "timer";
   timer.innerText = "00:00";
