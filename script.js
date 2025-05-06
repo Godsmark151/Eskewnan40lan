@@ -137,7 +137,7 @@ async function launchCameraInterface() {
   recordBtn.innerHTML = `<div class="inner-circle"></div>`;
   recordBtn.onclick = () => toggleRecording();
   controlsContainer.appendChild(recordBtn);
-  
+
   const multiCam = await hasMultipleCameras();
   if (multiCam) {
     const switchBtn = document.createElement("button");
@@ -146,6 +146,9 @@ async function launchCameraInterface() {
     switchBtn.onclick = switchCamera;
     controlsContainer.appendChild(switchBtn);
   }
+
+  cameraZone.appendChild(controlsContainer);
+
 
   const timer = document.createElement("div");
   timer.id = "timer";
