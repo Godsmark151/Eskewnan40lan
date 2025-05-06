@@ -147,8 +147,6 @@ async function launchCameraInterface() {
   console.log("✅ Ajoute controlsContainer");
   cameraZone.appendChild(controlsContainer);
 
-  // pa bliye drawLoop()
-  drawLoop();
 }
 
 
