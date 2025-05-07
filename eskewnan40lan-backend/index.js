@@ -32,7 +32,7 @@ const uploadLimiter = rateLimit({
 const upload = multer({
   dest: "uploads/",
   limits: {
-    fileSize: 5 * 1024 * 1024 // 5MB
+    fileSize: 20 * 20480 * 20480 // 20MB
   }
 });
 
