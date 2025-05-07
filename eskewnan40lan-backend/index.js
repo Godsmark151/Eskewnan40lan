@@ -22,7 +22,7 @@ app.use(express.json());
 // ✅ Rate limit: max 10 demann / minit
 const uploadLimiter = rateLimit({
   windowMs: 60 * 1000,
-  max: 10,
+  max: 500,
   message: "Twòp demann. Tanpri eseye ankò pita.",
   standardHeaders: true,
   legacyHeaders: false,
@@ -48,6 +48,9 @@ app.post("/upload", uploadLimiter, upload.single("video"), (req, res) => {
 
   exec(cmd, (error, stdout, stderr) => {
     fs.unlink(inputPath, () => {}); // efase fichye webm lan
+    console.error("❌ ffmpeg error:", error);
+    console.log("📝 ffmpeg stdout:", stdout);
+    console.log("⚠️ ffmpeg stderr:", stderr);
 
     if (error) {
       console.error("❌ ffmpeg error:", error);
