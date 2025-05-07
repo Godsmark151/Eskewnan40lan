@@ -10,6 +10,10 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const tokens = new Map();
 
+app.use(express.json({ limit: '100mb' }));
+app.use(express.urlencoded({ extended: true, limit: '100mb' }));
+
+
 // ✅ CORS pou frontend lan sèlman
 app.use(cors({
   origin: ["https://eskewnan40lan.com"],
@@ -19,7 +23,7 @@ app.use(cors({
 
 app.use(express.json());
 
-// ✅ Rate limit: max 10 demann / minit
+// ✅ Rate limit: max 500 demann / minit
 const uploadLimiter = rateLimit({
   windowMs: 60 * 1000,
   max: 500,
