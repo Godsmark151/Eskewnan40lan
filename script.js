@@ -284,10 +284,12 @@ async function uploadBlob(blob) {
   waitDiv.style.color = "#fff";
   waitDiv.style.fontSize = "1.4rem";
 
+  waitDiv.classList.add("wait-overlay");
   waitDiv.innerHTML = `
-    <div class="spinner" style="margin-bottom: 16px; width: 40px; height: 40px; border: 5px solid #fff; border-top: 5px solid #999; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+    <div class="spinner"></div>
     <div>${waitMessages[currentLang] || waitMessages["en"]}</div>
   `;
+
 
   document.body.appendChild(waitDiv);
 
