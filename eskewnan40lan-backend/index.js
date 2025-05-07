@@ -32,8 +32,11 @@ const uploadLimiter = rateLimit({
   legacyHeaders: false,
 });
 
-// ✅ Multer setup pou fichye max 5MB
-const upload = multer({ dest: "uploads/" }); // ✅ Pa gen fileSize limit
+const upload = multer({
+  dest: "uploads/"
+  // ❌ pa mete limits: { fileSize } si ou vle sispann limit
+});
+
 
 // ✅ Resevwa fichye epi konvèti ak ffmpeg
 app.post("/upload", uploadLimiter, upload.single("video"), (req, res) => {
