@@ -86,22 +86,21 @@ app.get("/video/:filename", (req, res) => {
   const validToken = tokens.get(req.params.filename);
 
   if (!validToken || tokenProvided !== validToken) {
-    axios.post("https://script.google.com/macros/s/AKfycbxCvR9Enj5glp6mLhT_krmrrV3J2Ufe4lgLzLHF9GiDEWqGovApWL56t8gfjRHjpONL/exec", {
+    axios.post("https://script.google.com/macros/s/AKfycbxtOWYfWJh7KHuK0uKAb79aqWsi_JHbm5enbKhpbARCTXY1aM8CXyJzihHZ-C-LvwGC/exec", {
       timestamp: new Date().toISOString(),
       device: req.headers["user-agent"],
       region: req.headers["x-forwarded-for"] || req.connection.remoteAddress,
-      status: "fail"
+      status: "success"
     }, {
-      headers: {
-        "Content-Type": "application/json"
-      }
+      headers: { "Content-Type": "application/json" }
     });
+
     return res.status(403).send("❌ Ou pa gen aksè ak videyo sa a."); // <<-- SA OU TE BLIYE
 }
 
 
   if (fs.existsSync(filePath)) {
-    axios.post("https://script.google.com/macros/s/AKfycbxCvR9Enj5glp6mLhT_krmrrV3J2Ufe4lgLzLHF9GiDEWqGovApWL56t8gfjRHjpONL/exec", {
+    axios.post("https://script.google.com/macros/s/AKfycbxtOWYfWJh7KHuK0uKAb79aqWsi_JHbm5enbKhpbARCTXY1aM8CXyJzihHZ-C-LvwGC/exec", {
       timestamp: new Date().toISOString(),
       device: req.headers["user-agent"],
       region: req.headers["x-forwarded-for"] || req.connection.remoteAddress,
