@@ -86,7 +86,7 @@ app.get("/video/:filename", (req, res) => {
   const validToken = tokens.get(req.params.filename);
 
   if (!validToken || tokenProvided !== validToken) {
-    axios.post("https://script.google.com/macros/s/AKfycbwGeAHfdzu2XPhb3wiu7b5NW26IT9VQJUZ1DZCdVXVZ1HrQ6qgeDrdXMq5KLV5AZF31Rg/exec", {
+    axios.post("https://script.google.com/macros/s/AKfycbxCvR9Enj5glp6mLhT_krmrrV3J2Ufe4lgLzLHF9GiDEWqGovApWL56t8gfjRHjpONL/exec", {
       timestamp: new Date().toISOString(),
       device: req.headers["user-agent"],
       region: req.headers["x-forwarded-for"] || req.connection.remoteAddress,
@@ -101,7 +101,7 @@ app.get("/video/:filename", (req, res) => {
 
 
   if (fs.existsSync(filePath)) {
-    axios.post("https://script.google.com/macros/s/AKfycbwGeAHfdzu2XPhb3wiu7b5NW26IT9VQJUZ1DZCdVXVZ1HrQ6qgeDrdXMq5KLV5AZF31Rg/exec", {
+    axios.post("https://script.google.com/macros/s/AKfycbxCvR9Enj5glp6mLhT_krmrrV3J2Ufe4lgLzLHF9GiDEWqGovApWL56t8gfjRHjpONL/exec", {
       timestamp: new Date().toISOString(),
       device: req.headers["user-agent"],
       region: req.headers["x-forwarded-for"] || req.connection.remoteAddress,
