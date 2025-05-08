@@ -91,18 +91,27 @@ app.get("/video/:filename", (req, res) => {
       device: req.headers["user-agent"],
       region: req.headers["x-forwarded-for"] || req.connection.remoteAddress,
       status: "fail"
-    }).catch(err => console.error("❌ Pa ka voye done echèk:", err.message));
+    }, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+    return res.status(403).send("❌ Ou pa gen aksè ak videyo sa a."); // <<-- SA OU TE BLIYE
+}
 
-    return res.status(403).send("❌ Ou pa gen aksè ak videyo sa a.");
-  }
 
   if (fs.existsSync(filePath)) {
-    axios.post("https://script.google.com/macros/s/AKfycbxc2HRk_SqejBOm8zJdb_K18nAWHu3dd3YYDqX7PT2znV0lDj861PPOJidIyPxFp1ShOQ/exec", {
+    axios.post("https://script.google.com/macros/s/AKfycbwGeAHfdzu2XPhb3wiu7b5NW26IT9VQJUZ1DZCdVXVZ1HrQ6qgeDrdXMq5KLV5AZF31Rg/exec", {
       timestamp: new Date().toISOString(),
       device: req.headers["user-agent"],
       region: req.headers["x-forwarded-for"] || req.connection.remoteAddress,
       status: "success"
-    }).catch(err => console.error("❌ Pa ka voye done siksè:", err.message));
+    }, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+
 
     return res.sendFile(filePath);
   } else {
