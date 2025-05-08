@@ -5,6 +5,7 @@ const fs = require("fs");
 const path = require("path");
 const { exec } = require("child_process");
 const rateLimit = require("express-rate-limit");
+const axios = require("axios");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -85,25 +86,26 @@ app.get("/video/:filename", (req, res) => {
   const validToken = tokens.get(req.params.filename);
 
   if (!validToken || tokenProvided !== validToken) {
+    axios.post("https://script.google.com/macros/s/AKfycbxc2HRk_SqejBOm8zJdb_K18nAWHu3dd3YYDqX7PT2znV0lDj861PPOJidIyPxFp1ShOQ/exec", {
+      timestamp: new Date().toISOString(),
+      device: req.headers["user-agent"],
+      region: req.headers["x-forwarded-for"] || req.connection.remoteAddress,
+      status: "fail"
+    }).catch(err => console.error("❌ Pa ka voye done echèk:", err.message));
+
     return res.status(403).send("❌ Ou pa gen aksè ak videyo sa a.");
   }
 
   if (fs.existsSync(filePath)) {
-    res.sendFile(filePath);
+    axios.post("https://script.google.com/macros/s/AKfycbxc2HRk_SqejBOm8zJdb_K18nAWHu3dd3YYDqX7PT2znV0lDj861PPOJidIyPxFp1ShOQ/exec", {
+      timestamp: new Date().toISOString(),
+      device: req.headers["user-agent"],
+      region: req.headers["x-forwarded-for"] || req.connection.remoteAddress,
+      status: "success"
+    }).catch(err => console.error("❌ Pa ka voye done siksè:", err.message));
+
+    return res.sendFile(filePath);
   } else {
-    res.status(404).send("❌ Videyo pa jwenn");
+    return res.status(404).send("❌ Videyo pa jwenn");
   }
-});
-
-// ✅ Handler pou erè gwosè fichye
-app.use((err, req, res, next) => {
-  if (err instanceof multer.MulterError && err.code === 'LIMIT_FILE_SIZE') {
-    return res.status(413).json({ error: "Fichye a twò gwo. Maksimòm se 5MB." });
-  }
-  next(err);
-});
-
-// ✅ Demare serve a
-app.listen(PORT, () => {
-  console.log(`🚀 API ap koute sou http://localhost:${PORT}`);
 });
