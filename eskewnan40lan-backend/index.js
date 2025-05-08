@@ -118,3 +118,8 @@ app.get("/video/:filename", (req, res) => {
     return res.status(404).send("❌ Videyo pa jwenn");
   }
 });
+// ✅ Demare sèvè a
+app.listen(PORT, () => {
+  console.log(`🚀 API ap koute sou http://localhost:${PORT}`);
+});
+
