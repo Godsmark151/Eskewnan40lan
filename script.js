@@ -308,7 +308,7 @@ async function uploadBlob(blob) {
     const data = await res.json();
     const filename = data.filename;
     const token = data.token;
-    const mp4Url = `https://eskewnan40lan-backend.onrender.com/video/${filename}?token=${token}`;
+    const mp4Url = `https://eskewnan40lan-backend.onrender.com/video/${filename}?token=${token}&lang=${currentLang}`;
 
     displayPreview(mp4Url);
   } catch (err) {
