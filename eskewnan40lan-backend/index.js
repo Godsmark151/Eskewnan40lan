@@ -80,43 +80,51 @@ app.post("/upload", uploadLimiter, upload.single("video"), (req, res) => {
 });
 
 // ✅ Resevwa videyo ak token sèlman
-app.get("/video/:filename", (req, res) => {
+app.get("/video/:filename", async (req, res) => {
   const filePath = path.join(__dirname, "videos", req.params.filename);
   const tokenProvided = req.query.token;
+  const lang = req.query.lang || "unknown";
   const validToken = tokens.get(req.params.filename);
 
+  const region = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+  const device = req.headers["user-agent"] || "Unknown";
+
+  const scriptURL = "https://script.google.com/macros/s/AKfycbxtOWYfWJh7KHuK0uKAb79aqWsi_JHbm5enbKhpbARCTXY1aM8CXyJzihHZ-C-LvwGC/exec";
+
+  // ✅ Fonksyon pou voye statistik yo
+  async function logStat(status) {
+    try {
+      await axios.post(scriptURL, {
+        timestamp: new Date().toISOString(),
+        region,
+        device,
+        status,
+        lang
+      }, {
+        headers: { "Content-Type": "application/json" }
+      });
+      console.log("✅ Done voye: ", { region, device, status, lang });
+    } catch (err) {
+      console.error("❌ Pa ka voye done statistik:", err.message);
+    }
+  }
+
+  // ❌ Token pa bon
   if (!validToken || tokenProvided !== validToken) {
-    axios.post("https://script.google.com/macros/s/AKfycbxtOWYfWJh7KHuK0uKAb79aqWsi_JHbm5enbKhpbARCTXY1aM8CXyJzihHZ-C-LvwGC/exec", {
-      timestamp: new Date().toISOString(),
-      device: req.headers["user-agent"],
-      region: req.headers["x-forwarded-for"] || req.connection.remoteAddress,
-      status: "success"
-    }, {
-      headers: { "Content-Type": "application/json" }
-    });
+    await logStat("fail");
+    return res.status(403).send("❌ Ou pa gen aksè ak videyo sa a.");
+  }
 
-    return res.status(403).send("❌ Ou pa gen aksè ak videyo sa a."); // <<-- SA OU TE BLIYE
-}
-
-
+  // ✅ Fichye egziste
   if (fs.existsSync(filePath)) {
-    axios.post("https://script.google.com/macros/s/AKfycbxtOWYfWJh7KHuK0uKAb79aqWsi_JHbm5enbKhpbARCTXY1aM8CXyJzihHZ-C-LvwGC/exec", {
-      timestamp: new Date().toISOString(),
-      device: req.headers["user-agent"],
-      region: req.headers["x-forwarded-for"] || req.connection.remoteAddress,
-      status: "success"
-    }, {
-      headers: {
-        "Content-Type": "application/json"
-      }
-    });
-
-
+    await logStat("success");
     return res.sendFile(filePath);
   } else {
+    await logStat("fail");
     return res.status(404).send("❌ Videyo pa jwenn");
   }
 });
+
 // ✅ Demare sèvè a
 app.listen(PORT, () => {
   console.log(`🚀 API ap koute sou http://localhost:${PORT}`);
