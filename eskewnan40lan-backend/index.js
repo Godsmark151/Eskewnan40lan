@@ -98,11 +98,11 @@ app.get("/video/:filename", async (req, res) => {
     });
 
     const sheets = google.sheets({ version: "v4", auth });
-    const spreadsheetId = "1a7liRRfIKhDOzdtCyd9DgiZBTEse6src8D9M6y_TCBA"; // 🔁 Ranplase ak vre ID ou a
+    const spreadsheetId = "1a7liRRfIKhDOzdtCyd9DgiZBTEse6src8D9M6y_TCBA"; // 
 
     await sheets.spreadsheets.values.append({
       spreadsheetId,
-     range: "Sheet1!B7:H",
+     range: "database!B7:H",
       valueInputOption: "USER_ENTERED",
       requestBody: {
         values: [[
