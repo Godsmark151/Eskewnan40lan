@@ -79,7 +79,6 @@ app.post("/upload", uploadLimiter, upload.single("video"), (req, res) => {
   });
 });
 
-// ✅ Resevwa videyo ak token sèlman
 app.get("/video/:filename", async (req, res) => {
   const filePath = path.join(__dirname, "videos", req.params.filename);
   const tokenProvided = req.query.token;
@@ -88,39 +87,48 @@ app.get("/video/:filename", async (req, res) => {
 
   const region = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
   const device = req.headers["user-agent"] || "Unknown";
+  const status = (!validToken || tokenProvided !== validToken) ? "fail" : (fs.existsSync(filePath) ? "success" : "fail");
 
-  const scriptURL = "https://script.google.com/macros/s/AKfycbzH4dufn3Xzz8iJMQmjZq-yOtTWc5DcbqEOteuSJWutQbaYEPLHW8VaNTeQ6jkk_ioT/exec";
+  // ✅ Google Sheets API tracking
+  try {
+    const auth = new google.auth.GoogleAuth({
+      keyFile: "/etc/secrets/eskewnan40lan-stats",
+      scopes: ["https://www.googleapis.com/auth/spreadsheets"],
+    });
 
-  // ✅ Fonksyon pou voye statistik yo
-  async function logStat(status) {
-    try {
-      await axios.post(scriptURL, {
-        timestamp: new Date().toISOString(),
-        region,
-        device,
-        status,
-        lang
-      }, {
-        headers: { "Content-Type": "application/json" }
-      });
-      console.log("✅ Done voye: ", { region, device, status, lang });
-    } catch (err) {
-      console.error("❌ Pa ka voye done statistik:", err.message);
-    }
+    const sheets = google.sheets({ version: "v4", auth });
+    const spreadsheetId = "1a7liRRfIKhDOzdtCyd9DgiZBTEse6src8D9M6y_TCBA"; // 🔁 Ranplase ak vre ID ou a
+
+    await sheets.spreadsheets.values.append({
+      spreadsheetId,
+      range: "Downloads!B7:H",
+      valueInputOption: "USER_ENTERED",
+      requestBody: {
+        values: [[
+          new Date().toLocaleDateString("en-US"),
+          1, // total video = 1
+          lang,
+          status === "success" ? 1 : 0,
+          status === "fail" ? 1 : 0,
+          region,
+          device
+        ]],
+      },
+    });
+
+    console.log("✅ Statistik mete nan Google Sheets");
+  } catch (err) {
+    console.error("❌ Pa ka mete done nan Sheets:", err.message);
   }
 
-  // ❌ Token pa bon
+  // ✅ Retounen repons videyo a
   if (!validToken || tokenProvided !== validToken) {
-    await logStat("fail");
     return res.status(403).send("❌ Ou pa gen aksè ak videyo sa a.");
   }
 
-  // ✅ Fichye egziste
   if (fs.existsSync(filePath)) {
-    await logStat("success");
     return res.sendFile(filePath);
   } else {
-    await logStat("fail");
     return res.status(404).send("❌ Videyo pa jwenn");
   }
 });
