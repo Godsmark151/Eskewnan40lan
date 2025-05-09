@@ -102,7 +102,7 @@ app.get("/video/:filename", async (req, res) => {
 
     await sheets.spreadsheets.values.append({
       spreadsheetId,
-     range: "Downloads!B7:H7",
+     range: "Downloads!B7",
       valueInputOption: "USER_ENTERED",
       requestBody: {
         values: [[
