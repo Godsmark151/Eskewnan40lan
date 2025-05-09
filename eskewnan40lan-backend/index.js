@@ -89,7 +89,7 @@ app.get("/video/:filename", async (req, res) => {
   const region = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
   const device = req.headers["user-agent"] || "Unknown";
 
-  const scriptURL = "https://script.google.com/macros/s/AKfycbxtOWYfWJh7KHuK0uKAb79aqWsi_JHbm5enbKhpbARCTXY1aM8CXyJzihHZ-C-LvwGC/exec";
+  const scriptURL = "https://script.google.com/macros/s/AKfycbzH4dufn3Xzz8iJMQmjZq-yOtTWc5DcbqEOteuSJWutQbaYEPLHW8VaNTeQ6jkk_ioT/exec";
 
   // ✅ Fonksyon pou voye statistik yo
   async function logStat(status) {
