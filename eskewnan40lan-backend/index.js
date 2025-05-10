@@ -84,6 +84,7 @@ app.get("/video/:filename", async (req, res) => {
   }
 });
 
+
 // ✅ Sove done sèlman yon sèl fwa pou chak token + filename
 async function logStatOnce(filename, token, lang, status, region, device, spreadsheetId, keyFilePath) {
   const id = `${filename}-${token}`;
@@ -96,6 +97,9 @@ async function logStatOnce(filename, token, lang, status, region, device, spread
       scopes: ["https://www.googleapis.com/auth/spreadsheets"],
     });
     const sheets = google.sheets({ version: "v4", auth });
+    console.log("📝 Ap ekri nan Sheets:", {
+      lang, status, region, device, spreadsheetId, keyFilePath
+    });
 
     await sheets.spreadsheets.values.append({
       spreadsheetId,
