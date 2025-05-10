@@ -11,6 +11,7 @@ const { google } = require("googleapis");
 const app = express();
 const PORT = process.env.PORT || 3000;
 const tokens = new Map();
+const loggedStats = new Set();
 
 app.use(express.json({ limit: '100mb' }));
 app.use(express.urlencoded({ extended: true, limit: '100mb' }));
