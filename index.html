@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- ✅ Corrected Favicon setup if files are in /images folder -->
+  <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+  <link rel="shortcut icon" href="images/favicon.ico">
+  <link rel="manifest" href="images/site.webmanifest">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ✅ Content Security Policy -->
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self' https://plausible.io https://www.webrtc-experiment.com https://cdn.webrtc-experiment.com 'nonce-abc123';
+    connect-src 'self' https://api.cloudinary.com https://res.cloudinary.com https://plausible.io https://eskewnan40lan-worker.tgp-operateurradio.workers.dev;
+    style-src 'self' https://fonts.googleapis.com;
+    font-src 'self' https://fonts.gstatic.com;
+    img-src 'self' https://res.cloudinary.com data:;
+    media-src 'self' https://res.cloudinary.com blob:;">
+
+
+
+  <!-- ✅ Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
+
+  <!-- ✅ Main CSS -->
+  <script src="https://www.webrtc-experiment.com/RecordRTC.js"></script>
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- ✅ Script ekstèn (mete script.js nan fichye apa) -->
+  <script src="script.js" defer nonce="abc123"></script>
+
+  <!-- ✅ Plausible Analytics -->
+  <script defer data-domain="eskewnan40lan.com" src="https://plausible.io/js/script.js" nonce="abc123"></script>
+</head>
+
+<body>
+  <!-- Safari modal -->
+  <div id="safari-modal" class="hidden">
+    <div id="safari-modal-content">
+      <h2>⚠️ Enpòtan</h2>
+      <p>Chrome sou iPhone pa sipòte anrejistreman videyo.<br>
+         Tanpri ouvri sit sa a nan Safari pou ou ka kontinye anrejistre.</p>
+      <button id="close-safari-modal">Mwen konprann</button>
+    </div>
+  </div>
+
+  <!-- Kamera interface -->
+  <section id="camera-interface"></section>
+</body>
+</html>
