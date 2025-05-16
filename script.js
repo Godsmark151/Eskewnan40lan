@@ -120,7 +120,7 @@ async function launchCameraInterface() {
   cameraZone.appendChild(video);
 
   overlay = new Image();
-  overlay.src = `images/overlay.png`;
+  overlay.src = "images/overlay.png";
 
   canvas = document.createElement("canvas");
   ctx = canvas.getContext("2d");
