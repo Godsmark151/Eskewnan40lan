@@ -2,9 +2,10 @@
 body {
   margin: 0;
   font-family: 'Poppins', sans-serif;
-  background: #000;
-  color: #fff;
+  background: linear-gradient(to bottom, #000000 0%, #3a1e0b 100%);
+  color: white;
   text-align: center;
+  min-height: 100vh;
 }
 
 video, canvas {
