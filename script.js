@@ -1,3 +1,7 @@
+function isIphoneChrome() {
+  const ua = navigator.userAgent;
+  return /CriOS/.test(ua) && /iPhone|iPod|iPad/.test(ua);
+}
 const safariMessages = {
   ht: {
     title: "⚠️ Enpòtan",
@@ -52,10 +56,10 @@ function isIOSDevice() {
   return /iPhone|iPod|iPad/.test(navigator.userAgent);
 }
 
-function isIphoneChrome() {
-  const ua = navigator.userAgent;
-  return /CriOS/.test(ua) && isIphone();
-}
+if (isIphoneChrome()) {
+    document.getElementById("safari-modal").style.display = "flex";
+    return;
+  }
 
 function isSafariReal() {
   const ua = navigator.userAgent;
@@ -84,6 +88,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       safariModal.style.display = "none";
     });
   }
+  
   if (isIphoneChrome()) {
     document.getElementById("safari-modal").style.display = "flex";
     return;
