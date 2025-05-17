@@ -179,7 +179,7 @@ async function launchCameraInterface() {
   const userScript = {
     ht: "Mwen se [non ou], mwen nan [zòn kote ou ye a],\nMwen gen yon envitasyon espesyal pou ou!\nSoti 8 jen rive 20 jiyè, se 40 Jou Jèn sou Shekinah.fm.\nMwen deja la. E ou menm, èske w nan nan 40 lan?",
     fr: "Je suis [votre nom], je suis à [votre lieu],\nJ’ai une invitation spéciale pour vous !\nDu 8 juin au 20 juillet, ce sont les 40 jours de jeûne sur Shekinah.fm.\nMoi, j’y suis déjà. Et vous, êtes-vous dans les 40 ?",
-    en: "I am [your name], I'm in [your location],\nI have a special invitation for you!\nFrom June 8th to July 20th, it's 40 Days of Fasting on Shekinah.fm.\nI'm already in. And you, are you in the 40?",
+    en: "Mwen se [non ou], mwen nan [zòn kote ou ye a],\nMwen gen yon envitasyon espesyal pou ou!\nSoti 8 jen rive 20 jiyè, se 40 Jou Jèn sou Shekinah.fm.\nMwen deja la. E ou menm, èske w nan nan 40 lan?",
     es: "Soy [tu nombre], estoy en [tu ubicación],\nTengo una invitación especial para ti.\nDel 8 de junio al 20 de julio, son los 40 días de ayuno en Shekinah.fm.\nYa estoy dentro. ¿Y tú, estás en los 40?"
   };
 
