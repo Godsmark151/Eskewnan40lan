@@ -56,11 +56,6 @@ function isIOSDevice() {
   return /iPhone|iPod|iPad/.test(navigator.userAgent);
 }
 
-if (isIphoneChrome()) {
-    document.getElementById("safari-modal").style.display = "flex";
-    return;
-  }
-
 function isSafariReal() {
   const ua = navigator.userAgent;
   return /iPhone|iPad|iPod/.test(ua) && /Safari/.test(ua) && !/CriOS|FxiOS/.test(ua);
