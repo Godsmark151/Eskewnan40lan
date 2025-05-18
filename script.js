@@ -68,16 +68,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   if (isIphoneChrome()) {
     const modalData = safariMessages[currentLang];
-    if (safariModal) {
-      safariModal.querySelector("h2").innerHTML = modalData.title;
-      safariModal.querySelector("p").innerHTML = modalData.text;
-      safariModal.querySelector("button").innerText = modalData.button;
-      safariModal.querySelector("button").addEventListener("click", () => {
-        safariModal.style.display = "none";
-      });
-      safariModal.style.display = "flex";
-    }
-    return;
+    safariModal.querySelector("h2").innerHTML = modalData.title;
+    safariModal.querySelector("p").innerHTML = modalData.text;
+    const closeBtn = safariModal.querySelector("button");
+    closeBtn.innerText = modalData.button;
+    closeBtn.addEventListener("click", () => {
+      safariModal.style.display = "none";
+    });
+    safariModal.style.display = "flex";
+    return; // ❗ Pa kontinye lanse kamera
   }
   try {
     await requestPermissions();
