@@ -24,7 +24,6 @@ const safariMessages = {
     button: "Entiendo"
   }
 };
-
 const errorMessages = {
   ht: "❌ Erè pandan upload. Tanpri verifye koneksyon ou.",
   fr: "❌ Erreur pendant le téléchargement. Veuillez vérifier votre connexion.",
