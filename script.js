@@ -24,7 +24,6 @@ const safariMessages = {
     button: "Entiendo"
   }
 };
-
 const errorMessages = {
   ht: "❌ Erè pandan upload. Tanpri verifye koneksyon ou.",
   fr: "❌ Erreur pendant le téléchargement. Veuillez vérifier votre connexion.",
@@ -35,14 +34,6 @@ const errorMessages = {
 const currentLang = ["ht", "fr", "en", "es"].includes(navigator.language.slice(0, 2))
   ? navigator.language.slice(0, 2)
   : "en";
-
-const modalData = safariMessages[currentLang];
-document.querySelector("#safari-modal h2").innerHTML = modalData.title;
-document.querySelector("#safari-modal p").innerHTML = modalData.text;
-document.querySelector("#safari-modal button").innerText = modalData.button;
-document.querySelector("#close-safari-modal").addEventListener("click", () => {
-  document.getElementById("safari-modal").style.display = "none";
-});
 
 function isIphone() {
   return (
@@ -73,20 +64,19 @@ const waitMessages = {
 };
 
 document.addEventListener("DOMContentLoaded", async () => {
-  const modalData = safariMessages[currentLang];
   const safariModal = document.getElementById("safari-modal");
-  if (safariModal) {
+
+  if (isIphoneChrome()) {
+    const modalData = safariMessages[currentLang];
     safariModal.querySelector("h2").innerHTML = modalData.title;
     safariModal.querySelector("p").innerHTML = modalData.text;
-    safariModal.querySelector("button").innerText = modalData.button;
-    document.getElementById("close-safari-modal").addEventListener("click", () => {
+    const closeBtn = safariModal.querySelector("button");
+    closeBtn.innerText = modalData.button;
+    closeBtn.addEventListener("click", () => {
       safariModal.style.display = "none";
     });
-  }
-  
-  if (isIphoneChrome()) {
-    document.getElementById("safari-modal").style.display = "flex";
-    return;
+    safariModal.style.display = "flex";
+    return; // ❗ Pa kontinye lanse kamera
   }
   try {
     await requestPermissions();
@@ -164,7 +154,10 @@ async function launchCameraInterface() {
     video._drawH = drawHeight;
   
     video.play();
-  };  
+  };
+
+
+
   const controlsContainer = document.createElement("div");
   controlsContainer.style.position = "fixed";
   controlsContainer.style.bottom = "30px";
@@ -227,7 +220,6 @@ function drawLoop() {
   }
   requestAnimationFrame(drawLoop);
 }
-
 
 async function switchCamera() {
   currentFacing = currentFacing === "user" ? "environment" : "user";
