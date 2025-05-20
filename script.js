@@ -24,6 +24,7 @@ const safariMessages = {
     button: "Entiendo"
   }
 };
+
 const errorMessages = {
   ht: "❌ Erè pandan upload. Tanpri verifye koneksyon ou.",
   fr: "❌ Erreur pendant le téléchargement. Veuillez vérifier votre connexion.",
@@ -34,6 +35,14 @@ const errorMessages = {
 const currentLang = ["ht", "fr", "en", "es"].includes(navigator.language.slice(0, 2))
   ? navigator.language.slice(0, 2)
   : "en";
+
+const modalData = safariMessages[currentLang];
+document.querySelector("#safari-modal h2").innerHTML = modalData.title;
+document.querySelector("#safari-modal p").innerHTML = modalData.text;
+document.querySelector("#safari-modal button").innerText = modalData.button;
+document.querySelector("#close-safari-modal").addEventListener("click", () => {
+  document.getElementById("safari-modal").style.display = "none";
+});
 
 function isIphone() {
   return (
@@ -64,19 +73,20 @@ const waitMessages = {
 };
 
 document.addEventListener("DOMContentLoaded", async () => {
+  const modalData = safariMessages[currentLang];
   const safariModal = document.getElementById("safari-modal");
-
-  if (isIphoneChrome()) {
-    const modalData = safariMessages[currentLang];
+  if (safariModal) {
     safariModal.querySelector("h2").innerHTML = modalData.title;
     safariModal.querySelector("p").innerHTML = modalData.text;
-    const closeBtn = safariModal.querySelector("button");
-    closeBtn.innerText = modalData.button;
-    closeBtn.addEventListener("click", () => {
+    safariModal.querySelector("button").innerText = modalData.button;
+    document.getElementById("close-safari-modal").addEventListener("click", () => {
       safariModal.style.display = "none";
     });
-    safariModal.style.display = "flex";
-    return; // ❗ Pa kontinye lanse kamera
+  }
+  
+  if (isIphoneChrome()) {
+    document.getElementById("safari-modal").style.display = "flex";
+    return;
   }
   try {
     await requestPermissions();
@@ -123,13 +133,38 @@ async function launchCameraInterface() {
   cameraZone.appendChild(canvas);
 
   video.onloadedmetadata = () => {
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
+    // Mete canvas ak overlay a sou 3000 x 3000
+    canvas.width = 3000;
+    canvas.height = 3000;
+  
+    // Ajiste videyo a pou li santre epi skale san li pa detire
+    const videoAspect = video.videoWidth / video.videoHeight;
+    const canvasAspect = canvas.width / canvas.height;
+  
+    let drawWidth, drawHeight, offsetX, offsetY;
+  
+    if (videoAspect > canvasAspect) {
+      // Videyo pi laj: adapte selon wotè
+      drawHeight = canvas.height;
+      drawWidth = drawHeight * videoAspect;
+      offsetX = (canvas.width - drawWidth) / 2;
+      offsetY = 0;
+    } else {
+      // Videyo pi wo: adapte selon lajè
+      drawWidth = canvas.width;
+      drawHeight = drawWidth / videoAspect;
+      offsetX = 0;
+      offsetY = (canvas.height - drawHeight) / 2;
+    }
+  
+    // Sove sa pou drawLoop
+    video._drawX = offsetX;
+    video._drawY = offsetY;
+    video._drawW = drawWidth;
+    video._drawH = drawHeight;
+  
     video.play();
-  };
-
-
-
+  };  
   const controlsContainer = document.createElement("div");
   controlsContainer.style.position = "fixed";
   controlsContainer.style.bottom = "30px";
@@ -185,10 +220,14 @@ async function launchCameraInterface() {
 }
 
 function drawLoop() {
-  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-  if (overlay.complete) ctx.drawImage(overlay, 0, 0, canvas.width, canvas.height);
+  if (video._drawW && video._drawH) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // Netwaye canvas
+    ctx.drawImage(video, video._drawX, video._drawY, video._drawW, video._drawH); // Jis SA
+    if (overlay.complete) ctx.drawImage(overlay, 0, 0, canvas.width, canvas.height); // Overlay
+  }
   requestAnimationFrame(drawLoop);
 }
+
 
 async function switchCamera() {
   currentFacing = currentFacing === "user" ? "environment" : "user";
