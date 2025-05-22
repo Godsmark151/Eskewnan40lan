@@ -447,24 +447,34 @@ function displayPreview(mp4Url) {
   document.body.appendChild(buttons);
 }
 
+ const buttons = document.createElement("div");
+  buttons.style.marginTop = "20px";
+  buttons.style.display = "flex";
+  buttons.style.justifyContent = "center";
+  buttons.style.gap = "20px";
+  buttons.appendChild(downloadBtn);
+  buttons.appendChild(retryBtn);
+
+  document.body.appendChild(buttons);
+}
+
 function forceDownloadMP4(mp4Url) {
-  fetch(mp4Url)
-    .then(res => res.blob())
-    .then(blob => {
-      const blobUrl = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = blobUrl;
-      const names = {
-        ht: "Eske-w-nan-40-lan.mp4",
-        fr: "Es-tu-dans-les-40.mp4",
-        en: "Are-you-in-the-40.mp4",
-        es: "Estas-en-los-40.mp4"
-      };
-      a.download = names[currentLang] || "Eske-w-nan-40-lan.mp4";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(blobUrl);
-    })
-    .catch(() => alert(errorMessages[currentLang]));
+  try {
+    const a = document.createElement("a");
+    a.href = mp4Url;
+    const names = {
+      ht: "Eske-w-nan-40-lan.mp4",
+      fr: "Es-tu-dans-les-40.mp4",
+      en: "Are-you-in-the-40.mp4",
+      es: "Estas-en-los-40.mp4"
+    };
+    a.download = names[currentLang] || "Eske-w-nan-40-lan.mp4";
+    a.target = "_blank";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  } catch (e) {
+    alert(errorMessages[currentLang]);
+    console.error("❌ Download error:", e);
+  }
 }
