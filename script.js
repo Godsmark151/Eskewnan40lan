@@ -123,9 +123,9 @@ async function launchCameraInterface() {
   cameraZone.appendChild(canvas);
 
   video.onloadedmetadata = () => {
-    // Mete canvas ak overlay a sou 3000 x 3000
-    canvas.width = 2700;
-    canvas.height = 4800;
+    // Mete canvas ak overlay a sou 720 x 1280
+    canvas.width = 720;
+    canvas.height = 1280;
   
     // Ajiste videyo a pou li santre epi skale san li pa detire
     const videoAspect = video.videoWidth / video.videoHeight;
