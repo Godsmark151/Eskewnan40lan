@@ -447,17 +447,6 @@ function displayPreview(mp4Url) {
   document.body.appendChild(buttons);
 }
 
- const buttons = document.createElement("div");
-  buttons.style.marginTop = "20px";
-  buttons.style.display = "flex";
-  buttons.style.justifyContent = "center";
-  buttons.style.gap = "20px";
-  buttons.appendChild(downloadBtn);
-  buttons.appendChild(retryBtn);
-
-  document.body.appendChild(buttons);
-}
-
 function forceDownloadMP4(mp4Url) {
   try {
     const a = document.createElement("a");
